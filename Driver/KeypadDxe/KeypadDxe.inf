@@ -35,7 +35,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  Lumia535Pkg/Lumia535Pkg.dec
+  Lumia520Pkg/Lumia520Pkg.dec
 
 [LibraryClasses]
   MemoryAllocationLib

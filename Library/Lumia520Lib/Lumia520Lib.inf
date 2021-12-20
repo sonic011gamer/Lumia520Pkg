@@ -13,7 +13,7 @@
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = Lumia535Lib
+  BASE_NAME                      = Lumia520Lib
   FILE_GUID                      = cb494bad-23ff-427e-8608-d7e138d3363b
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
@@ -24,15 +24,15 @@
   MdeModulePkg/MdeModulePkg.dec
   ArmPkg/ArmPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
-  Lumia535Pkg/Lumia535Pkg.dec
+  Lumia520Pkg/Lumia520Pkg.dec
 
 [LibraryClasses]
   ArmLib
   DebugLib
 
 [Sources.common]
-  Lumia535Lib.c
-  Lumia535LibMem.c
+  Lumia520Lib.c
+  Lumia520LibMem.c
 
 [Sources.Arm]
   Arm/ArmPlatformHelper.S    | GCC

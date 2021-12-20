@@ -14,7 +14,7 @@
   MdePkg/MdePkg.dec
   ArmPkg/ArmPkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
-  Lumia535Pkg/Lumia535Pkg.dec
+  Lumia520Pkg/Lumia520Pkg.dec
 
 [BuildOptions.ARM]
   GCC:*_*_*_CC_FLAGS = -Wno-unused-value

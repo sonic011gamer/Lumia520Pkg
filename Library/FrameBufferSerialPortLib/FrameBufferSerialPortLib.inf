@@ -11,7 +11,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   ArmPkg/ArmPkg.dec
-  Lumia535Pkg/Lumia535Pkg.dec
+  Lumia520Pkg/Lumia520Pkg.dec
 
 [LibraryClasses]
   ArmLib
@@ -22,9 +22,9 @@
   CacheMaintenanceLib
 
 [Pcd]
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferWidth
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferHeight
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferWidth
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferHeight
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight

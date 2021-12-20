@@ -15,7 +15,7 @@
   MdePkg/MdePkg.dec
   ArmPkg/ArmPkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  Lumia535Pkg/Lumia535Pkg.dec
+  Lumia520Pkg/Lumia520Pkg.dec
 
 [LibraryClasses]
   IoLib

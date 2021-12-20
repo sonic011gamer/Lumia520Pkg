@@ -8,7 +8,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  Lumia535Pkg/Lumia535Pkg.dec
+  Lumia520Pkg/Lumia520Pkg.dec
 
 [LibraryClasses]
   BaseLib
