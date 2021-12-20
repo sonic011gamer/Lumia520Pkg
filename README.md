@@ -1,7 +1,7 @@
-# Lumia535Pkg
-WIP Custom ARM UEFI firmware for Lumia535
+# Lumia520Pkg
+WIP Custom ARM UEFI firmware for Lumia 520
 
 # Current Status
-Technically can boot Linux. The SoC still needs to be brought up on mainline, as it's pretty old and obscure and therefore nobody worked on it.
+Doesn't boot properly yet!
 
-Based on [Lumia930Pkg](https://github.com/rickliu2000/Lumia930Pkg) by @rickliu2000
+Based on [Lumia535Pkg](https://github.com/konradybcio/Lumia535Pkg) by @konradybcio
