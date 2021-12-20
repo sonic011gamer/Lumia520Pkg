@@ -1,6 +1,6 @@
 [Defines]
   DEC_SPECIFICATION              = 0x00010005
-  PACKAGE_NAME                   = Lumia535Pkg
+  PACKAGE_NAME                   = Lumia520Pkg
   PACKAGE_GUID                   = cd560434-f88c-4e47-971b-152fdbfd18df
   PACKAGE_VERSION                = 0.1
 
@@ -8,7 +8,7 @@
   Include                        # Root include for the package
 
 [Guids.common]
-  gLumia535PkgTokenSpaceGuid = { 0x4c59628e, 0x0a8a, 0x4099, { 0x8d, 0xe5, 0xf2, 0x08, 0xff, 0x80, 0xc4, 0xbf } }
+  gLumia520PkgTokenSpaceGuid = { 0x4c59628e, 0x0a8a, 0x4099, { 0x8d, 0xe5, 0xf2, 0x08, 0xff, 0x80, 0xc4, 0xbf } }
   gQcomTokenSpaceGuid = { 0x59f58449, 0x99e1, 0x4a19, { 0x86, 0x65, 0x12, 0xd6, 0x37, 0xed, 0xbe, 0x5e } }
 
 [Protocols]
@@ -22,19 +22,19 @@
 
 [PcdsFixedAtBuild.common]
   # Simple FrameBuffer
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x0FF00000|UINT32|0x30
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|540|UINT32|0x31
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|960|UINT32|0x32
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32|UINT32|0x33
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|540|UINT32|0x34
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|960|UINT32|0x35
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x0FF00000|UINT32|0x30
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|540|UINT32|0x31
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|960|UINT32|0x32
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32|UINT32|0x33
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|540|UINT32|0x34
+  gLumia520PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|960|UINT32|0x35
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x08000000|UINT32|0x00000036 #0x00800000
   #gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x00C00000|UINT64|0x00000037
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x10000|UINT32|0x00000038
   gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x10000|UINT32|0x00000039
  # Memory allocation
-  gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize|0x3CD00000|UINT64|0x00000a106
-  gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize|0x03300000|UINT32|0x00000a107
+  gLumia520PkgTokenSpaceGuid.PcdPreAllocatedMemorySize|0x3CD00000|UINT64|0x00000a106
+  gLumia520PkgTokenSpaceGuid.PcdUefiMemPoolSize|0x03300000|UINT32|0x00000a107
 
   # QTimer
   gQcomTokenSpaceGuid.PcdQTimerBase|0xF9021000|UINT64|0x00000050
