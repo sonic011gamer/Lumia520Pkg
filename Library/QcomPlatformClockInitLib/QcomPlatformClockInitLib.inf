@@ -7,7 +7,7 @@
   LIBRARY_CLASS                  = QcomPlatformClockInitLib
 
 [Sources.common]
-  msm8612-clock.c
+  msm8960-clock.c
 
 [Packages]
   MdePkg/MdePkg.dec
