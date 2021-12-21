@@ -11,10 +11,10 @@ static uint32_t mmc_pwrctl_base[] =
 	{ MSM_SDC1_BASE, MSM_SDC2_BASE };
 
 static uint32_t mmc_sdhci_base[] =
-	{ MSM_SDC1_SDHCI_BASE, MSM_SDC2_SDHCI_BASE };
+	{ MSM_SDC1_BASE, MSM_SDC1_BASE };
 
 static uint32_t  mmc_sdc_pwrctl_irq[] =
-	{ SDCC1_PWRCTL_IRQ, SDCC2_PWRCTL_IRQ };
+	{ SDCC_HC_PWR_CTRL_INT, SDCC_HC_PWR_CTRL_INT };
 
 VOID LibQcomTargetMmcSdhciInit(INIT_SLOT_CB InitSlot)
 {
@@ -40,7 +40,7 @@ VOID LibQcomTargetMmcSdhciInit(INIT_SLOT_CB InitSlot)
     clk = TLMM_CUR_VAL_10MA;
     cmd = TLMM_CUR_VAL_8MA;
     dat = TLMM_CUR_VAL_8MA;
-    reg = SDC1_HDRV_PULL_CTL;
+    reg = SDC1_RCLK_PULL_CTL_OFF;
 
     /* Drive strength configs for sdc pins */
     struct tlmm_cfgs sdc1_hdrv_cfg[] =
