@@ -45,9 +45,13 @@ UartInit
 			        __TIME__,
 				__DATE__
 	));
-  MmioWrite32(0x00800820, 0);
+
 }
 
+STATIC VOID PsHoldReboot()
+{
+  MmioWrite32(0x00800820, 0);
+}
 VOID
 Main
 (
