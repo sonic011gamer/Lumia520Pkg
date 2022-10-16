@@ -45,7 +45,7 @@ UartInit
 			        __TIME__,
 				__DATE__
 	));
-  writel(0, 0x00800820);
+  MmioWrite32(0x00800820, 0);
 }
 
 VOID
