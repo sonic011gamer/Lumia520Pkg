@@ -45,12 +45,7 @@ UartInit
 			        __TIME__,
 				__DATE__
 	));
-
-    DEBUG((
-        EFI_D_INFO | EFI_D_LOAD,
-        "SRC0_addrs at 0x%p\n",
-        MmioRead32(0xFD901EA4)
-  )); 
+  writel(0, 0x00800820);
 }
 
 VOID
