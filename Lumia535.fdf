@@ -1,5 +1,5 @@
 [FD.MSM8612_EFI]
-BaseAddress   = 0x3CC00000|gArmTokenSpaceGuid.PcdFdBaseAddress  #The base address of the FLASH Device.
+BaseAddress   = 0x80200000|gArmTokenSpaceGuid.PcdFdBaseAddress  #The base address of the FLASH Device.
 Size          = 0x00100000|gArmTokenSpaceGuid.PcdFdSize         #The size in bytes of the FLASH Device
 ErasePolarity = 1
 BlockSize     = 0x200
@@ -52,17 +52,6 @@ READ_LOCK_STATUS   = TRUE
   INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
   INF EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
   INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
-
-  # SoC Drivers (Cross-referenced from EFIDroid and Ben)
-  INF Lumia535Pkg/Driver/BamDxe/BamDxe.inf
-  INF Lumia535Pkg/GPLDriver/GpioTlmmDxe/GpioTlmmDxe.inf
-  INF Lumia535Pkg/GPLDriver/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf
-  INF Lumia535Pkg/Driver/SpmiDxe/SpmiDxe.inf
-  INF Lumia535Pkg/Driver/Pm8x41Dxe/Pm8x41Dxe.inf
-  INF Lumia535Pkg/Driver/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
-  INF Lumia535Pkg/Driver/KeypadDxe/KeypadDxe.inf
-  INF Lumia535Pkg/Driver/ClockDxe/ClockDxe.inf
-  INF Lumia535Pkg/Driver/SdhciMMCHSDxe/SdhciMMCHS.inf
 
   # Runtime Services
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf

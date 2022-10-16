@@ -73,4 +73,3 @@
 
   gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize
-  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferAddress

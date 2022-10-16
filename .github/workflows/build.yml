@@ -1,0 +1,49 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "535" ]
+  pull_request:
+    branches: [ "535" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Update APT sources
+      run: sudo apt update
+    
+    - name: Install dependencies
+      run: sudo apt install build-essential crossbuild-essential-armhf uuid-dev iasl git nasm python3-distutils
+    
+    - name: Create EDK2 workspace
+      run: mkdir /home/runner/work/EDK2WorkDir
+      
+    - name: Clone sources
+      run: |
+        cd /home/runner/work/EDK2WorkDir/
+        git clone https://github.com/Tianocore/edk2.git -b stable/202011 --depth=1 --recursive 
+        git clone https://github.com/sonic011gamer/Lumia520Pkg --depth=1 edk2/Lumia520Pkg
+      
+    - name: Build BaseTools
+      run: |
+        cd /home/runner/work/EDK2WorkDir/edk2 
+        make -C BaseTools/
+    - name: Build EDK2
+      run: |
+        cd /home/runner/work/EDK2WorkDir/edk2 
+        . /home/runner/work/EDK2WorkDir/edk2/edksetup.sh 
+        GCC5_ARM_PREFIX=arm-linux-gnueabihf- build -a ARM -p Lumia520Pkg/Lumia535.dsc -t GCC5 -j$(nproc) -s -n 0
+      
+    - name: Create ELF binary
+      run: |
+        cd /home/runner/work/EDK2WorkDir/edk2/Build/Lumia535-ARM/DEBUG_GCC5/FV 
+        arm-linux-gnueabihf-objcopy -I binary -O elf32-littlearm --binary-architecture arm MSM8612_EFI.fd MSM8612_EFI.fd.elf && arm-linux-gnueabihf-ld MSM8612_EFI.fd.elf -T ../../../../Lumia520Pkg/FvWrapper.ld -o ../../../../../emmc_appsboot.mbn
+      
+    - uses: actions/upload-artifact@v3
+      with:
+       name: emmc_appsboot.mbn
+       path: /home/runner/work/EDK2WorkDir/emmc_appsboot.mbn

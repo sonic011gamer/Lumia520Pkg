@@ -29,27 +29,6 @@
 #define IS_XIP() (((UINT64)FixedPcdGet64 (PcdFdBaseAddress) > mSystemMemoryEnd) || \
                   ((FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) < FixedPcdGet64 (PcdSystemMemoryBase)))
 
-#ifndef _BGRA8888_COLORS_
-#define _BGRA8888_COLORS_
-#define BGRA8888_BLACK          0xff000000
-#define BGRA8888_WHITE          0xffffffff
-#define BGRA8888_CYAN           0xff00ffff
-#define BGRA8888_BLUE           0xff0000ff
-#define BGRA8888_SILVER         0xffc0c0c0
-#define BGRA8888_YELLOW         0xffffff00
-#define BGRA8888_ORANGE         0xffffa500
-#define BGRA8888_RED            0xffff0000
-#define BGRA8888_GREEN          0xff00ff00
-#endif
-
-#ifndef _FB_ADDRESS_
-#define _FB_ADDRESS_
-#define FB_ADDR                 0x400000
-#endif
-
-#define FB_ADDR_REG             0xFD990008 //0xFD901E14 
-#define FB_NEW_ADDR             FixedPcdGet32(PcdMipiFrameBufferAddress)
-
 UINT64 mSystemMemoryEnd = FixedPcdGet64(PcdSystemMemoryBase) +
                           FixedPcdGet64(PcdSystemMemorySize) - 1;
 
@@ -59,14 +38,6 @@ UartInit
     VOID
 )
 {
-
-    // Move Framebuffer to the top
-    MmioWrite32(FB_ADDR_REG,FB_NEW_ADDR);
-    // Flush using CTL0_FLUSH and Flush VIG0
-    // MmioWrite32(0xfd900618,0x00000001);
-    // MmioWrite32(0xfd900718,0x00000001); 
-
-
     SerialPortInitialize();
     DEBUG ((EFI_D_ERROR, "\nTianoCore on Microsoft Lumia 535 (ARM)\n"));
     DEBUG ((EFI_D_ERROR,  "Firmware version %s built %a %a\n\n",
