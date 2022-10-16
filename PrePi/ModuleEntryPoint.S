@@ -15,6 +15,8 @@
 #include <AsmMacroIoLib.h>
 #include <Library/PcdLib.h>
 
+#define LoadConstantToReg(Data, Reg) \
+    ldr Reg, =Data
 .text
 .align 3
 
