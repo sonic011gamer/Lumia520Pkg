@@ -35,7 +35,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
   
-  
+  Lumia535Pkg/Lumia535.dsc
 
 [FixedPcd]
   gQcomPkgTokenSpaceGuid.PcdQcomDebugGsbiID
