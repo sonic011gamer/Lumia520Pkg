@@ -7,7 +7,7 @@
 
 [Sources.common]
   Pi.c
-  EarlyQGic/EarlyQGic.c
+#  EarlyQGic/EarlyQGic.c
 
 [Sources.ARM]
   ReleaseInfo.S | GCC
@@ -49,27 +49,19 @@
   PrePiLib
 
 [FixedPcd]
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
   gArmTokenSpaceGuid.PcdCpuVectorBaseAddress
-  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
   gArmTokenSpaceGuid.PcdFvBaseAddress
   gArmTokenSpaceGuid.PcdFvSize
   gArmTokenSpaceGuid.PcdFdBaseAddress
   gArmTokenSpaceGuid.PcdFdSize
-  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize
-  gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
   gArmPlatformTokenSpaceGuid.PcdCoreCount
-
-  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize  
-
-[Pcd]
-  gArmTokenSpaceGuid.PcdSystemMemoryBase
-  gArmTokenSpaceGuid.PcdSystemMemorySize
-
-[Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
-
-  gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize
-  gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
+  gNexus5XPkgTokenSpaceGuid.PcdPreAllocatedMemorySize
+  gNexus5XPkgTokenSpaceGuid.PcdUefiMemPoolSize
