@@ -19,7 +19,6 @@
 #endif
 
 #define ERR_INVALID_ARGS -8
-#define ARRAY_SIZE(x) (sizeof(x)/sizeof((x)[0]))
 
 #define BIT(bit) (1U << (bit))
 #define BIT_GET(x, bit) ((x)& (1 << (bit)))
