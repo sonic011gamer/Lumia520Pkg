@@ -23,14 +23,25 @@
 #include <Library/PerformanceLib.h>
 #include <Library/PrePiHobListPointerLib.h>
 #include <Library/PrePiLib.h>
-#include <Library/PlatformPrePiLib.h>
 #include <Library/SerialPortLib.h>
 
 VOID EFIAPI ProcessLibraryConstructorList(VOID);
 
+STATIC VOID UartInit(VOID)
+{
+  SerialPortInitialize();
+
+  DEBUG((EFI_D_INFO, "\nTianoCore on Nokia Lumia 520 (ARM)\n"));
+  DEBUG(
+      (EFI_D_INFO, "Firmware version %s built %a %a\n\n",
+       (CHAR16 *)PcdGetPtr(PcdFirmwareVersionString), __TIME__, __DATE__));
+}
+
 VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
 {
-
+  // Initialize (fake) UART.
+  UartInit();
+  
   EFI_HOB_HANDOFF_INFO_TABLE *HobList;
   EFI_STATUS                  Status;
 
@@ -45,6 +56,9 @@ VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
 
   /* Enable program flow prediction, if supported */
   ArmEnableBranchPrediction();
+
+  // Initialize (fake) UART.
+  UartInit();
 
   // Declare UEFI region
   MemoryBase     = FixedPcdGet32(PcdSystemMemoryBase);
@@ -79,6 +93,16 @@ VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
   }
 
   DEBUG((EFI_D_LOAD | EFI_D_INFO, "MMU configured from device config\n"));
+
+  // Initialize GIC
+  if (!FixedPcdGetBool(PcdIsLkBuild)) {
+    Status = QGicPeim();
+
+    if (EFI_ERROR(Status)) {
+      DEBUG((EFI_D_ERROR, "Failed to configure GIC\n"));
+      CpuDeadLoop();
+    }
+  }
 
   // Add HOBs
   BuildStackHob((UINTN)StackBase, StackSize);
