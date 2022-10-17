@@ -45,8 +45,8 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
   INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
 
-  INF Lumia535Pkg/Dxe/TimerDxe/TimerDxe.inf
-  INF Lumia535Pkg/Dxe/PM8921Dxe/PM8921Dxe.inf
+  INF Lumia535Pkg/Driver/TimerDxe/TimerDxe.inf
+  INF Lumia535Pkg/Driver/PM8921Dxe/PM8921Dxe.inf
 
   # Core Drivers
   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
