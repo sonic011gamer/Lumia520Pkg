@@ -35,7 +35,7 @@
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x20000000         # 0.5GB
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdCoreCount|2
-  gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize|0x1D100000 #0FF00000
+  gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize|0x01700000 #0x1D100000
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize|0x02F00000
 
   # Default resolution for this firmware can be seen in dec file, override here for specific platform configuration if needed
