@@ -63,5 +63,5 @@
   gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
   gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
-  gNexus5XPkgTokenSpaceGuid.PcdPreAllocatedMemorySize
-  gNexus5XPkgTokenSpaceGuid.PcdUefiMemPoolSize
+  gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize
+  gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize
