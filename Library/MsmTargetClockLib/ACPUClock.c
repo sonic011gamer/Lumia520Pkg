@@ -47,7 +47,7 @@
 
 //#include <uart_dm.h>
 //#include <gsbi.h>
-#include <Library/mmc.h>
+#include <Library/qcom_mmc.h>
 //#include <board.h>
 //#include <smem.h>
 
