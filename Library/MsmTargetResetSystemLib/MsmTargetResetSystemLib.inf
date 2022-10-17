@@ -29,7 +29,7 @@
   MdePkg/MdePkg.dec
   ArmPkg/ArmPkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
-  Lumia535Pkg/Lumia535.dec
+  Lumia535Pkg/Lumia535Pkg.dec
 [Pcd.common]
   gArmTokenSpaceGuid.PcdCpuResetAddress
   gEmbeddedTokenSpaceGuid.PcdEmbeddedFdBaseAddress

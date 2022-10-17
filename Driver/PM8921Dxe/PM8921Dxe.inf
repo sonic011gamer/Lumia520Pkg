@@ -16,7 +16,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
   
-  Lumia535Pkg/Lumia535.dec
+  Lumia535Pkg/Lumia535Pkg.dec
 
 
 [LibraryClasses]
