@@ -132,9 +132,6 @@ CEntryPoint(
   IN UINTN StackSize
   )
 {
-  // Do platform specific initialization here
-  PlatformInitialize();
-
   // Goto primary Main.
   PrePiMain(StackBase, StackSize);
 
