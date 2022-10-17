@@ -10,7 +10,8 @@
 #
 #  VALID_ARCHITECTURES           = ARM IA32 X64 IPF EBC
 #
-
+[BuildOptions.ARM]
+  GCC:*_*_*_CC_FLAGS = -Werror -Wno-unused-function -Wno-unused-variable -Wno-shift-count-overflow
 [Sources.common]
   qcom_clock.c
   qcom_clock_local.c
