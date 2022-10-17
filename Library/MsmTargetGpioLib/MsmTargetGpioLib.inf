@@ -11,7 +11,9 @@
 #
 #  VALID_ARCHITECTURES           = ARM IA32 X64 IPF EBC
 #
-
+[BuildOptions.ARM]
+  GCC:*_*_*_CC_FLAGS = -Werror -Wno-error=unused-function 
+  
 [Sources.common]
   qcom_msm8960_gpio.c
 
