@@ -1,0 +1,32 @@
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = MsmSharedLib
+  FILE_GUID                      = 7f9caf32-a92a-4c65-a43e-8626645da5e9
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = MsmSharedLib
+
+
+#
+#  VALID_ARCHITECTURES           = ARM IA32 X64 IPF EBC
+#
+
+[Sources.common]
+  MsmSharedLib.c
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  TimerLib
+  ArmLib
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  
+  Lumia535Pkg/Lumia535Pkg.dec
+
+[FixedPcd]
+

@@ -181,10 +181,24 @@
 
   # Platform Drivers
   SerialPortLib|Lumia535Pkg/Library/FrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
+# SerialPortLib|Lumia535Pkg/Library/MsmSerialPortLib/MsmSerialPortLibWithoutInit.inf
   MemoryInitPeiLib|Lumia535Pkg/Library/MemoryInitPeiLib/PeiMemoryAllocationLib.inf
   PlatformPeiLib|Lumia535Pkg/Library/PlatformPeiLib/PlatformPeiLib.inf
   PlatformBootManagerLib|Lumia535Pkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   
+  MsmPM8921Lib                     |    Lumia535Pkg/Library/MsmPM8921Lib/MsmPM8921Lib.inf
+  MsmSharedLib                     |    Lumia535Pkg/Library/MsmSharedLib/MsmSharedLib.inf
+  MsmClockLib                      |    Lumia535Pkg/Library/MsmClockLib/MsmClockLib.inf
+  MsmSSBILib                       |    Lumia535Pkg/Library/MsmSSBILib/MsmSSBILib.inf
+  RealTimeClockLib                 |    Lumia535Pkg/Library/MsmPM8921RealTimeClockLib/MsmPM8921RealTimeClockLib.inf
+  TimerLib                         |    Lumia535Pkg/Library/MsmTargetTimerLib/MsmTargetTimerLib.inf
+  MsmTargetLib                     |    Lumia535Pkg/Library/MsmTargetLib/MsmTargetLib.inf
+  MsmTargetGpioLib                 |    Lumia535Pkg/Library/MsmTargetGpioLib/MsmTargetGpioLib.inf
+  EfiResetSystemLib                |    Lumia535Pkg/Library/MsmTargetResetSystemLib/MsmTargetResetSystemLib.inf
+  MsmTargetClockLib                |    Lumia535Pkg/Library/MsmTargetClockLib/MsmTargetClockLib.inf
+  MsmTargetMmcLib                  |    Lumia535Pkg/Library/MsmTargetMmcLib/MsmTargetMmcLib.inf
+  MsmTargetI2C                     |    Lumia535Pkg/Library/MsmTargetI2C/MsmTargetI2C.inf
+
   # System Reset
   EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
 
@@ -263,7 +277,7 @@
 
   # Processor Core Services
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+  Lumia535/Dxe/TimerDxe/TimerDxe.inf
   ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
@@ -273,6 +287,8 @@
 	RealTimeClockLib|OvmfPkg/Library/XenRealTimeClockLib/XenRealTimeClockLib.inf
   }
 
+  Lumia535Pkg/Driver/PM8921Dxe/PM8921Dxe.inf
+  Lumia535Pkg/Driver/MMCHSDxe/MMCHS.inf
   # Runtime Services
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf

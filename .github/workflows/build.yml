@@ -41,7 +41,7 @@ jobs:
     - name: Create ELF binary
       run: |
         cd /home/runner/work/EDK2WorkDir/edk2/Build/Lumia535-ARM/DEBUG_GCC5/FV 
-        arm-linux-gnueabihf-objcopy -I binary -O elf32-littlearm --binary-architecture arm MSM8612_EFI.fd MSM8612_EFI.fd.elf && arm-linux-gnueabihf-ld MSM8612_EFI.fd.elf -T ../../../../Lumia535Pkg/FvWrapper.ld -o ../../../../../emmc_appsboot.mbn
+        arm-linux-gnueabihf-objcopy -I binary -O elf32-littlearm --binary-architecture arm MSM8960_EFI.fd MSM8960_EFI.fd.elf && arm-linux-gnueabihf-ld MSM8960_EFI.fd.elf -T ../../../../Lumia535Pkg/FvWrapper.ld -o ../../../../../emmc_appsboot.mbn
       
     - uses: actions/upload-artifact@v3
       with:

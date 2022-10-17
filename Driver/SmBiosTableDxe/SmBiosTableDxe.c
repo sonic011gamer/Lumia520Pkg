@@ -300,7 +300,7 @@ CHAR8 *mProcessorInfoType4Strings[] = {
   "Socket",
   "Qualcomm Inc.",
   "Qualcomm Snapdragon 200 Processor (8612)",
-  "MSM8612",
+  "MSM8960",
   NULL
 };
 
