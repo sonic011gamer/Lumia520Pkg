@@ -12,7 +12,7 @@
 #  VALID_ARCHITECTURES           = ARM IA32 X64 IPF EBC
 #
 [BuildOptions.ARM]
-  GCC:*_*_*_CC_FLAGS = -Werror -Wno-unused-function -Wno-unused-variable -Wno-shift-count-overflow -wno-implicit-function-declaration
+  GCC:*_*_*_CC_FLAGS = -Werror -Wno-unused-function -Wno-unused-variable -Wno-shift-count-overflow -Wno-implicit-function-declaration
 
 [Sources.common]
   qcom_pm8921.c
