@@ -257,7 +257,7 @@ GetPerformanceCounter (
   VOID
   )
 {
-	DEBUG ((EFI_D_ERROR, "TimerLib:GetPerformanceCounter need mpl!!!\n"));
+	DEBUG ((EFI_D_ERROR, "TimerLib:GetPerformanceCounter need impl!!!\n"));
 	ASSERT(FALSE);
 	return 0;
 }
