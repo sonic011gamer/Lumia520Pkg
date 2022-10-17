@@ -6,7 +6,7 @@
 #include <Library/IoLib.h>
 
 #include <Library/PrintLib.h>
-#include <Platform/clock.h>
+#include <Library/qcom_clock.h>
 
 
 
