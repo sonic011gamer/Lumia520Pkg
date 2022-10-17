@@ -39,9 +39,6 @@ STATIC VOID UartInit(VOID)
 
 VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
 {
-  // Initialize (fake) UART.
-  UartInit();
-  
   EFI_HOB_HANDOFF_INFO_TABLE *HobList;
   EFI_STATUS                  Status;
 
@@ -93,16 +90,6 @@ VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
   }
 
   DEBUG((EFI_D_LOAD | EFI_D_INFO, "MMU configured from device config\n"));
-
-  // Initialize GIC
-  if (!FixedPcdGetBool(PcdIsLkBuild)) {
-    Status = QGicPeim();
-
-    if (EFI_ERROR(Status)) {
-      DEBUG((EFI_D_ERROR, "Failed to configure GIC\n"));
-      CpuDeadLoop();
-    }
-  }
 
   // Add HOBs
   BuildStackHob((UINTN)StackBase, StackSize);
