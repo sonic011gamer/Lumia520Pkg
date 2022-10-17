@@ -283,7 +283,10 @@ int rtc_month_days(unsigned int month, unsigned int year)
 {
 	return rtc_days_in_month[month] + (is_leap_year(year) && month == 1);
 }
-struct rtc_time *tm;
+
+typedef struct rtc_time {
+    struct rtc_time *tm;
+} rtc_time;
 void rtc_time_to_tm(unsigned int time, struct rtc_time *tm)
 {
 	unsigned int month, year;
