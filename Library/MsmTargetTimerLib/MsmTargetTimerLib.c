@@ -279,7 +279,7 @@ GetPerformanceCounterProperties (
 		// Timer counts up to 0xFFFFFFFF
 		*EndValue = 0xFFFFFFFF;
 	}
-	return PcdGet64(PcdArmArchTimerFreqInHz);
+	return PcdGet64(PcdEmbeddedPerformanceCounterFrequencyInHz);
 }
 
 /**
