@@ -40,6 +40,7 @@
   IoLib
   ArmGenericTimerCounterLib
 [Pcd]
+  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz
   gEmbeddedTokenSpaceGuid.PcdEmbeddedPerformanceCounterFrequencyInHz
   gEmbeddedTokenSpaceGuid.PcdEmbeddedPerformanceCounterPeriodInNanoseconds
 
