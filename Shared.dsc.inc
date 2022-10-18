@@ -132,7 +132,6 @@
   DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
   DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
   ExtractGuidedSectionLib|EmbeddedPkg/Library/PrePiExtractGuidedSectionLib/PrePiExtractGuidedSectionLib.inf
-  EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
   FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
   FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
   FrameBufferBltLib|MdeModulePkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
@@ -195,13 +194,13 @@
   TimerLib                         |    Lumia535Pkg/Library/MsmTargetTimerLib/MsmTargetTimerLib.inf
   MsmTargetLib                     |    Lumia535Pkg/Library/MsmTargetLib/MsmTargetLib.inf
   MsmTargetGpioLib                 |    Lumia535Pkg/Library/MsmTargetGpioLib/MsmTargetGpioLib.inf
-  EfiResetSystemLib                |    Lumia535Pkg/Library/MsmTargetResetSystemLib/MsmTargetResetSystemLib.inf
+
   MsmTargetClockLib                |    Lumia535Pkg/Library/MsmTargetClockLib/MsmTargetClockLib.inf
   MsmTargetMmcLib                  |    Lumia535Pkg/Library/MsmTargetMmcLib/MsmTargetMmcLib.inf
   MsmTargetI2C                     |    Lumia535Pkg/Library/MsmTargetI2C/MsmTargetI2C.inf
 
   # System Reset
-  EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
+  EfiResetSystemLib                |    Lumia535Pkg/Library/MsmTargetResetSystemLib/MsmTargetResetSystemLib.inf
 
 [LibraryClasses.common.SEC]
   HobLib|EmbeddedPkg/Library/PrePiHobLib/PrePiHobLib.inf

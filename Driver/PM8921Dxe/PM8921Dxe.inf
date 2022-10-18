@@ -10,6 +10,9 @@
 
 [Sources.common]
   PM8921Dxe.c
+  
+[BuildOptions.ARM]
+  GCC:*_*_*_CC_FLAGS = -Wno-unused-function -Wno-unused-variable -Wno-shift-count-overflow -Wno-implicit-function-declaration -Wno-return-type
 
 [Packages]
   ArmPkg/ArmPkg.dec
