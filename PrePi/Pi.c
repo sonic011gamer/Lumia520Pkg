@@ -69,7 +69,7 @@ VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
 
   DEBUG(
       (EFI_D_INFO | EFI_D_LOAD,
-       "UEFI Memory Base = 0x%llx, Size = 0x%llx, Stack Base = 0x%llx, Stack "
+       "UEFI Memory Base = 0x%llx\n, Size = 0x%llx\n, Stack Base = 0x%llx\n, Stack "
        "Size = 0x%llx\n",
        UefiMemoryBase, UefiMemorySize, StackBase, StackSize));
 
