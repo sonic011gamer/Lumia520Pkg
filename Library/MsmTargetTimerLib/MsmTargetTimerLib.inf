@@ -34,10 +34,11 @@
   MdePkg/MdePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   Lumia535Pkg/Lumia535Pkg.dec
-
+  ArmPkg/ArmPkg.dec
 [LibraryClasses]
   DebugLib
   IoLib
+  ArmLib
   ArmGenericTimerCounterLib
 [Pcd]
   gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz
