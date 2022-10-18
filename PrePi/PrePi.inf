@@ -38,7 +38,7 @@
   LzmaDecompressLib
   PeCoffGetEntryPointLib
   DebugAgentLib
-  SerialPortLib
+  FakeSerialPortLib
   MemoryAllocationLib
   MemoryInitPeiLib
   PrePiMemoryAllocationLib

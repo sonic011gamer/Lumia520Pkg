@@ -180,8 +180,8 @@
 #  PmicShutdownLibBoot|DragonboardVendorPkg/Library/PmicShutdownLib/PmicShutdownBoottimeLib.inf
 
   # Platform Drivers
-  SerialPortLib|Lumia535Pkg/Library/FrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
-# SerialPortLib|Lumia535Pkg/Library/MsmSerialPortLib/MsmSerialPortLibWithoutInit.inf
+  FakeSerialPortLib|Lumia535Pkg/Library/FrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
+  SerialPortLib|Lumia535Pkg/Library/MsmSerialPortLib/MsmSerialPortLibWithoutInit.inf
   MemoryInitPeiLib|Lumia535Pkg/Library/MemoryInitPeiLib/PeiMemoryAllocationLib.inf
   PlatformPeiLib|Lumia535Pkg/Library/PlatformPeiLib/PlatformPeiLib.inf
   PlatformBootManagerLib|Lumia535Pkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
