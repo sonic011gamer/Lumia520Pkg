@@ -26,7 +26,7 @@
 #include <Library/qcom_msm8960_irqs.h>
 #include <Library/qcom_msm8960_clock.h>
 #include <Library/qcom_msm8960_timer.h>
-#include <ArmGenericTimerCounterLib>
+#include <ArmGenericTimerCounterLib.h>
 
 #ifdef MDE_CPU_ARM
 #define MultU64xN MultU64x32
