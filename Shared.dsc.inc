@@ -80,7 +80,9 @@
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x02000000
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x02002000
 
-
+  #1 ticks about 148ns
+  gEmbeddedTokenSpaceGuid.PcdEmbeddedPerformanceCounterPeriodInNanoseconds  |148
+  
   #
   # Make VariableRuntimeDxe work at emulated non-volatile variable mode.
   #

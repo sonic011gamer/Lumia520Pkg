@@ -257,9 +257,8 @@ GetPerformanceCounter (
   VOID
   )
 {
-	DEBUG ((EFI_D_ERROR, "TimerLib:GetPerformanceCounter need impl!!!\n"));
-	ASSERT(FALSE);
-	return 0;
+  // Just return the value of system count
+  return ArmGenericTimerGetSystemCount ();
 }
 
 UINT64
@@ -280,5 +279,50 @@ GetPerformanceCounterProperties (
 		// Timer counts up to 0xFFFFFFFF
 		*EndValue = 0xFFFFFFFF;
 	}
-	return PcdGet64(PcdEmbeddedPerformanceCounterFrequencyInHz);
+	return PcdGet64(PcdArmArchTimerFreqInHz);
+}
+
+/**
+  Converts elapsed ticks of performance counter to time in nanoseconds.
+  This function converts the elapsed ticks of running performance counter to
+  time value in unit of nanoseconds.
+  @param  Ticks     The number of elapsed ticks of running performance counter.
+  @return The elapsed time in nanoseconds.
+**/
+UINT64
+EFIAPI
+GetTimeInNanoSecond (
+  IN      UINT64                     Ticks
+  )
+{
+  UINT64  NanoSeconds;
+  UINT32  Remainder;
+  UINT32  TimerFreq;
+
+  TimerFreq = GetPlatformTimerFreq ();
+  //
+  //          Ticks
+  // Time = --------- x 1,000,000,000
+  //        Frequency
+  //
+  NanoSeconds = MultU64xN (
+                  DivU64x32Remainder (
+                    Ticks,
+                    TimerFreq,
+                    &Remainder),
+                  1000000000U
+                  );
+
+  //
+  // Frequency < 0x100000000, so Remainder < 0x100000000, then (Remainder * 1,000,000,000)
+  // will not overflow 64-bit.
+  //
+  NanoSeconds += DivU64x32 (
+                   MultU64xN (
+                     (UINT64) Remainder,
+                     1000000000U),
+                   TimerFreq
+                   );
+
+  return NanoSeconds;
 }
