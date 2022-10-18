@@ -80,8 +80,12 @@ stack_pointer_setup:
   msr     CPSR_c,r0
   mov     r13,r4
 
+
+  // Move sec startup address into a data register
+  // Ensure we're jumping to FV version of the code (not boot remapped alias)
+  ldr   r4, =ASM_PFX(CEntryPoint)
   // Call C entry point
-  blx      ASM_PFX(CEntryPoint) /* Assume C code is thumb    */
+  blx   r4
 
 ShouldNeverGetHere:
   /* _CEntryPoint should never return */
