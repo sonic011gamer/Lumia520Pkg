@@ -7,7 +7,6 @@
 
 [Sources.common]
   Pi.c
-  PadConfiguration.c
 #  EarlyQGic/EarlyQGic.c
 
 [Sources.ARM]
@@ -38,7 +37,7 @@
   LzmaDecompressLib
   PeCoffGetEntryPointLib
   DebugAgentLib
-  FakeSerialPortLib
+  SerialPortLib
   MemoryAllocationLib
   MemoryInitPeiLib
   PrePiMemoryAllocationLib
@@ -52,7 +51,6 @@
   MsmClockLib
   #TimerLib
   MsmTargetLib
-  SerialPortLib
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdSystemMemoryBase
@@ -71,7 +69,3 @@
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
   gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize
-  gQcomPkgTokenSpaceGuid.PcdQcomDebugGsbiID
-  gQcomPkgTokenSpaceGuid.PcdQcomDebugGsbiBaseAddress
-  gQcomPkgTokenSpaceGuid.PcdQcomDebugUartDmBaseAddress
-  gQcomPkgTokenSpaceGuid.PcdQcomDebugRartDmClockRxTxBitRate

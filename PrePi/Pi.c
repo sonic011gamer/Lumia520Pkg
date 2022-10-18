@@ -25,15 +25,11 @@
 #include <Library/PrePiLib.h>
 #include <Library/SerialPortLib.h>
 
-extern void msm_clocks_init(VOID);
-extern void uart_dm_init(UINT8 id,UINT32 gsbi_base,UINT32 uart_dm_base);
-
-
 VOID PadConfiguration(VOID);
 
 VOID EFIAPI ProcessLibraryConstructorList(VOID);
 
-STATIC VOID FakeUartInit(VOID)
+STATIC VOID UartInit(VOID)
 {
   SerialPortInitialize();
 
@@ -45,18 +41,6 @@ STATIC VOID FakeUartInit(VOID)
 
 VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
 {
-  
-	// TODO:
-	// Set up Pin muxing.
-	PadConfiguration();
-
-	// Set up system clocking,now only uart.
-	msm_clocks_init();
-
-	// 
-	// Init Uart
-	uart_dm_init(FixedPcdGet8(PcdQcomDebugGsbiID), FixedPcdGet32(PcdQcomDebugGsbiBaseAddress), FixedPcdGet32(PcdQcomDebugUartDmBaseAddress));
-	DEBUG((EFI_D_ERROR, "UEFI:Sec:CEntryPoint Uart Enabled\n"));
   
   EFI_HOB_HANDOFF_INFO_TABLE *HobList;
   EFI_STATUS                  Status;
@@ -74,7 +58,7 @@ VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
   ArmEnableBranchPrediction();
 
   // Initialize (fake) UART.
-  FakeUartInit();
+  UartInit();
 
   // Declare UEFI region
   MemoryBase     = (VOID*)FixedPcdGet32(PcdSystemMemoryBase);
