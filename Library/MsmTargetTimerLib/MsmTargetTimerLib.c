@@ -26,7 +26,13 @@
 #include <Library/qcom_msm8960_irqs.h>
 #include <Library/qcom_msm8960_clock.h>
 #include <Library/qcom_msm8960_timer.h>
+#include <ArmGenericTimerCounterLib>
 
+#ifdef MDE_CPU_ARM
+#define MultU64xN MultU64x32
+#else
+#define MultU64xN MultU64x64
+#endif
 
 #define GPT_ENABLE_CLR_ON_MATCH_EN        2
 #define GPT_ENABLE_EN                     1
