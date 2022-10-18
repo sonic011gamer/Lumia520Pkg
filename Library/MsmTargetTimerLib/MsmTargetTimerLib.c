@@ -305,7 +305,7 @@ GetTimeInNanoSecond (
   UINT32  Remainder;
   UINT32  TimerFreq;
 
-  TimerFreq = PcdGet64(PcdArmArchTimerFreqInHz);
+  TimerFreq = PcdGet32(PcdArmArchTimerFreqInHz);
   //
   //          Ticks
   // Time = --------- x 1,000,000,000
