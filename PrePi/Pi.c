@@ -61,7 +61,7 @@ VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
   UartInit();
 
   // Declare UEFI region
-  MemoryBase     = (VOID*)FixedPcdGet32(PcdSystemMemoryBase);
+  MemoryBase     = FixedPcdGet32(PcdSystemMemoryBase);
   MemorySize     = FixedPcdGet32(PcdSystemMemorySize);
   UefiMemoryBase = MemoryBase + FixedPcdGet32(PcdPreAllocatedMemorySize);
   UefiMemorySize = FixedPcdGet32(PcdUefiMemPoolSize);
@@ -69,9 +69,9 @@ VOID PrePiMain(IN VOID *StackBase, IN UINTN StackSize)
 
   DEBUG(
       (EFI_D_INFO | EFI_D_LOAD,
-       "UEFI Memory Base = 0x%llx\n, Size = 0x%llx\n, Stack Base = 0x%llx\n, Stack "
+       "Memory Base\n, MemorySize\n, UEFI Memory Base = 0x%llx\n, Size = 0x%llx\n, Stack Base = 0x%llx\n, Stack "
        "Size = 0x%llx\n",
-       UefiMemoryBase, UefiMemorySize, StackBase, StackSize));
+       MemoryBase, MemorySize, UefiMemoryBase, UefiMemorySize, StackBase, StackSize));
 
   // Set up HOB
   HobList = HobConstructor(
