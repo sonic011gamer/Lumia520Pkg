@@ -25,8 +25,8 @@
   gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|960|UINT32|0x35
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x08000000|UINT32|0x00000036 #0x00800000
   #gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x81600000|UINT64|0x00000037
-  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x10000|UINT32|0x00000038
-  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x10000|UINT32|0x00000039
+  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x20000|UINT32|0x00000038
+  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x20000|UINT32|0x00000039
  # Memory allocation
   gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize|0x3CD00000|UINT64|0x00000a106
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize|0x03300000|UINT32|0x00000a107
