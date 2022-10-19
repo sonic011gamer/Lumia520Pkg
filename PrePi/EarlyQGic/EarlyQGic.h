@@ -1,7 +1,7 @@
 #ifndef __EARLY_QGIC_H__
 #define __EARLY_QGIC_H__
 
-#include <Platform/iomap.h>
+#include <Library/qcom_msm8960_iomap.h>
 
 #define GIC_DIST_REG(off) (MSM_GIC_DIST_BASE + (off))
 
