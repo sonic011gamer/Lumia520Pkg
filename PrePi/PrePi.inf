@@ -49,7 +49,7 @@
   PrePiLib
   MsmSharedLib
   MsmClockLib
-  #TimerLib
+  TimerLib
   MsmTargetLib
 
 [FixedPcd]

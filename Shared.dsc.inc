@@ -190,8 +190,8 @@
   MsmClockLib                      |    Lumia535Pkg/Library/MsmClockLib/MsmClockLib.inf
   MsmSSBILib                       |    Lumia535Pkg/Library/MsmSSBILib/MsmSSBILib.inf
   RealTimeClockLib                 |    Lumia535Pkg/Library/MsmPM8921RealTimeClockLib/MsmPM8921RealTimeClockLib.inf
-  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
-#  TimerLib                         |    Lumia535Pkg/Library/MsmTargetTimerLib/MsmTargetTimerLib.inf
+#  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  TimerLib                         |    Lumia535Pkg/Library/MsmTargetTimerLib/MsmTargetTimerLib.inf
   MsmTargetLib                     |    Lumia535Pkg/Library/MsmTargetLib/MsmTargetLib.inf
   MsmTargetGpioLib                 |    Lumia535Pkg/Library/MsmTargetGpioLib/MsmTargetGpioLib.inf
 
