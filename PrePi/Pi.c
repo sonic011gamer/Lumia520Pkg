@@ -67,6 +67,8 @@ Main
     // Initialize UART.
     UartInit();
 
+    StackSize = FixedPcdGet32 (PcdCoreCount) * PcdGet32 (PcdCPUCorePrimaryStackSize);
+    
     // Declare UEFI region
     MemoryBase      = FixedPcdGet32(PcdSystemMemoryBase);
     MemorySize      = FixedPcdGet32(PcdSystemMemorySize);
@@ -82,8 +84,6 @@ Main
     StackBase  // The top of the UEFI Memory is reserved for the stacks
     );
     //PrePeiSetHobList (HobList);
-
-    StackSize = FixedPcdGet32 (PcdCoreCount) * PcdGet32 (PcdCPUCorePrimaryStackSize);
 
     DEBUG((
         EFI_D_INFO | EFI_D_LOAD,
