@@ -105,7 +105,7 @@ Main
     }
 
     // Initialize GIC
-    Status = QGicPeim();
+/*    Status = QGicPeim();
     if (EFI_ERROR(Status))
     {
       DEBUG((EFI_D_ERROR, "Failed to configure GIC\n"));
@@ -113,7 +113,7 @@ Main
     }
     DEBUG((EFI_D_INFO | EFI_D_LOAD, "GIC configured\n"));
 
-
+*/
   // Create the Stacks HOB (reserve the memory for all stacks)	
 
   BuildStackHob ((UINTN)StackBase, StackSize);
