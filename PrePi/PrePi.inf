@@ -53,19 +53,28 @@
   MsmTargetLib
 
 [FixedPcd]
-  gArmTokenSpaceGuid.PcdSystemMemoryBase
-  gArmTokenSpaceGuid.PcdSystemMemorySize
   gArmTokenSpaceGuid.PcdCpuVectorBaseAddress
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
   gArmTokenSpaceGuid.PcdFvBaseAddress
   gArmTokenSpaceGuid.PcdFvSize
   gArmTokenSpaceGuid.PcdFdBaseAddress
   gArmTokenSpaceGuid.PcdFdSize
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize
+  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize
+  gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize
   gArmPlatformTokenSpaceGuid.PcdCoreCount
+
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize  
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+
+[Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
-  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
+
   gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize
+  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
