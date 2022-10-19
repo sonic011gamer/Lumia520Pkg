@@ -115,8 +115,15 @@ Main
 
 */
   // Create the Stacks HOB (reserve the memory for all stacks)	
+    Status = BuildStackHob ((UINTN)StackBase, StackSize);
+    if (EFI_ERROR(Status))
+    {
+        DEBUG((EFI_D_ERROR, "Failed to reserve memory for stacks\n"));
+        CpuDeadLoop();
+    }else{
+       DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stacks memory reserved.\n"));
+    }
 
-  BuildStackHob ((UINTN)StackBase, StackSize);
   
   //TODO: Call CpuPei as a library
   BuildCpuHob (ArmGetPhysicalAddressBits (), PcdGet8 (PcdPrePiCpuIoSize));
