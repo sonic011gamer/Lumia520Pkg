@@ -17,13 +17,13 @@ jobs:
       run: sudo apt update
     
     - name: Install dependencies
-      run: sudo apt install build-essential crossbuild-essential-armhf uuid-dev iasl git nasm python3-distutils
+      run: sudo apt install build-essential crossbuild-essential-armhf uuid-dev iasl git nasm python3-distutils wget
     
     - name: Clone the GCC 5 compiler
       run: |
-      wget https://releases.linaro.org/components/toolchain/binaries/latest-5/arm-eabi/gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi.tar.xz
-      tar xvf gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi.tar.xz --directory /
-      mv /gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi/ gcc5/
+       wget https://releases.linaro.org/components/toolchain/binaries/latest-5/arm-eabi/gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi.tar.xz
+       tar xvf gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi.tar.xz --directory /
+       mv /gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi/ gcc5/
 
     - name: Create EDK2 workspace
       run: mkdir /home/runner/work/EDK2WorkDir
