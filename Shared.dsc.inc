@@ -15,7 +15,7 @@
 #
 
 [BuildOptions.common]
-  GCC:*_*_ARM_CC_FLAGS = -fno-stack-protector
+  GCC:*_*_ARM_CC_FLAGS = -fno-stack-protector -march=armv7-a
   GCC:*_*_ARM_DLINK_FLAGS = -fno-stack-protector
 
 [BuildOptions.common.EDKII.DXE_CORE,BuildOptions.common.EDKII.DXE_DRIVER,BuildOptions.common.EDKII.UEFI_DRIVER,BuildOptions.common.EDKII.UEFI_APPLICATION]
