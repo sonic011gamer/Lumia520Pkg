@@ -19,6 +19,12 @@ jobs:
     - name: Install dependencies
       run: sudo apt install build-essential crossbuild-essential-armhf uuid-dev iasl git nasm python3-distutils
     
+    - name: Clone the GCC 5 compiler
+      run: |
+      wget https://releases.linaro.org/components/toolchain/binaries/latest-5/arm-eabi/gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi.tar.xz
+      tar xvf gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi.tar.xz --directory /
+      mv /gcc-linaro-5.5.0-2017.10-x86_64_arm-eabi/ gcc5/
+
     - name: Create EDK2 workspace
       run: mkdir /home/runner/work/EDK2WorkDir
       
@@ -36,12 +42,12 @@ jobs:
       run: |
         cd /home/runner/work/EDK2WorkDir/edk2 
         . /home/runner/work/EDK2WorkDir/edk2/edksetup.sh 
-        GCC5_ARM_PREFIX=arm-linux-gnueabihf- build -a ARM -p Lumia535Pkg/Lumia535.dsc -t GCC5 -j$(nproc) -s -n 0
+        GCC5_ARM_PREFIX=/gcc5/bin/arm-eabi- build -a ARM -p Lumia535Pkg/Lumia535.dsc -t GCC5 -j$(nproc) -s -n 0
       
     - name: Create ELF binary
       run: |
         cd /home/runner/work/EDK2WorkDir/edk2/Build/Lumia535-ARM/DEBUG_GCC5/FV 
-        arm-linux-gnueabihf-objcopy -I binary -O elf32-littlearm --binary-architecture arm MSM8960_EFI.fd MSM8960_EFI.fd.elf && arm-linux-gnueabihf-ld MSM8960_EFI.fd.elf -T ../../../../Lumia535Pkg/FvWrapper.ld -o ../../../../../emmc_appsboot.mbn
+        export GCC5_ARM_PREFIX=/gcc5/bin/arm-eabi && GCC5_ARM_PREFIX-objcopy -I binary -O elf32-littlearm --binary-architecture arm MSM8960_EFI.fd MSM8960_EFI.fd.elf && GCC5_ARM_PREFIX-ld MSM8960_EFI.fd.elf -T ../../../../Lumia535Pkg/FvWrapper.ld -o ../../../../../emmc_appsboot.mbn
       
     - uses: actions/upload-artifact@v3
       with:
