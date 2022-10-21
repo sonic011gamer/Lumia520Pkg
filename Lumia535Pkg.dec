@@ -23,7 +23,7 @@
   gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|32|UINT32|0x33
   gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|540|UINT32|0x34
   gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|960|UINT32|0x35
-  gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x08000000|UINT32|0x00000036 #0x00800000
+  gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x81700000|UINT32|0x00000036 #0x00800000
   #gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80C00000|UINT64|0x00000037
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x20000|UINT32|0x00000038
   gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize|0x20000|UINT32|0x00000039

@@ -1,35 +1,57 @@
-#------------------------------------------------------------------------------
-#
-# Copyright (c) 2008 - 2009, Apple Inc. All rights reserved.<BR>
-#
-# This program and the accompanying materials
-# are licensed and made available under the terms and conditions of the BSD License
-# which accompanies this distribution.  The full text of the license may be found at
-# http://opensource.org/licenses/bsd-license.php
-#
-# THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
-# WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
-#
-#------------------------------------------------------------------------------
+//
+//  Copyright (c) 2011-2015, ARM Limited. All rights reserved.
+//  Copyright (c) 2019, RUIKAI LIU and MR TUNNEL. All rights reserved.
+//
+//  This program and the accompanying materials
+//  are licensed and made available under the terms and conditions of the BSD License
+//  which accompanies this distribution.  The full text of the license may be found at
+//  http://opensource.org/licenses/bsd-license.php
+//
+//  THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+//
+//
 
 #include <AsmMacroIoLib.h>
 #include <Library/PcdLib.h>
+#include <Chipset/ArmV7.h>
 
 #define LoadConstantToReg(Data, Reg) \
     ldr Reg, =Data
-.text
-.align 3
 
-.globl ASM_PFX(CEntryPoint)
-GCC_ASM_EXPORT(_ModuleEntryPoint)
+GCC_ASM_IMPORT (CEntryPoint)
+GCC_ASM_EXPORT (_ModuleEntryPoint)
 GCC_ASM_IMPORT (ArmWriteCpacr)
 GCC_ASM_IMPORT (ArmEnableInstructionCache)
 GCC_ASM_IMPORT (ArmEnableDataCache)
 GCC_ASM_IMPORT (ArmInvalidateTlb)
+.global _StackBase 
+.global _StackSize
 
-ASM_PFX(_ModuleEntryPoint):
+_StackBase:
+  .quad FixedPcdGet32(PcdPrePiStackBase)
 
-  //Disable L2 cache
+_StackSize:
+  .quad FixedPcdGet32(PcdPrePiStackSize)
+
+
+_ModuleEntryPoint:
+  mov r0, #0
+  bl ASM_PFX(ArmReadMpidr)
+  mov r8, r0
+  /* First ensure all interrupts are disabled */
+  bl ASM_PFX(ArmDisableInterrupts)
+
+  /* Ensure that the MMU and caches are off */
+  bl ASM_PFX(ArmDisableCachesAndMmu)
+ 
+  /* Invalide I-Cache */
+  bl ASM_PFX(ArmInvalidateInstructionCache)
+  
+  /* Invalidate TLB */
+  bl ASM_PFX(ArmInvalidateTlb)
+  
+ //Disable L2 cache
   mrc     p15, 0, r0, c1, c0, 1   // read Auxiliary Control Register
   bic     r0, r0, #0x00000002     // disable L2 cache
   mcr     p15, 0, r0, c1, c0, 1   // store Auxiliary Control Register
@@ -49,45 +71,48 @@ ASM_PFX(_ModuleEntryPoint):
   mov     r0, #0x40000000       // Set EN bit in FPEXC
   mcr     p10,#0x7,r0,c8,c0,#0  // msr     FPEXC,r0 in ARM assembly
 
+_SetupExceptionVector:
+  LoadConstantToReg (FixedPcdGet32(PcdCpuVectorBaseAddress), r0)
+  ldr r1, dead
+  mov r2, #0
 
-  // Set CPU vectors to start of DRAM
-  LoadConstantToReg (FixedPcdGet32(PcdCpuVectorBaseAddress) ,r0) // Get vector base
-  mcr     p15, 0, r0, c12, c0, 0
-  isb                               // Sync changes to control registers
-
-  // Fill vector table with branchs to current pc (jmp $)
-  ldr     r1, ShouldNeverGetHere
-  movs    r2, #0
-FillVectors:
+_FillVectors:
   str     r1, [r0, r2]
-  adds    r2, r2, #4
-  cmp     r2, #32
-  bne     FillVectors
+  adds    r2, r2, #8      /* Fill every 8 byte */
+  cmp     r2, #0x800      /* Vector Table Size */
+  bne     _FillVectors
+    
+_SetupPrimaryCoreStack:
+  ldr r0, _StackBase     /* Stack base arg0 */
+  ldr r1, _StackSize     /* Stack size arg1 */
+  
+  add r4, r0, r1
+  add sp, r4, #0
 
-  /* before we call C code, lets setup the stack pointer in internal RAM */
-stack_pointer_setup:
+_EnableCache: 
+  bl ArmInvalidateDataCache
+  bl ASM_PFX(ArmEnableInstructionCache)
+  bl ASM_PFX(ArmEnableDataCache) 
+_PrepareArguments:
 
-  //
-  // Set stack based on PCD values. Need to do it this way to make C code work
-  // when it runs from FLASH.
-  //
-  LoadConstantToReg (FixedPcdGet32(PcdPrePiStackBase) ,r0)    /* stack base arg0  */
-  LoadConstantToReg (FixedPcdGet32(PcdPrePiStackSize) ,r1)    /* stack size arg1  */
-  add     r4, r0, r1
-
-  //Enter SVC mode and set up SVC stack pointer
-  mov     r0,#0x13|0x80|0x40
-  msr     CPSR_c,r0
-  mov     r13,r4
-
+	mov   r0, r8
+	ldr   r1, _StackBase
+	ldr   r2, _StackSize
+	mov   r3, sp
 
   // Move sec startup address into a data register
   // Ensure we're jumping to FV version of the code (not boot remapped alias)
   ldr   r4, =ASM_PFX(CEntryPoint)
-  // Call C entry point
+
+  // Jump to PrePiCore C code
+  //    r0 = MpId
+  //    r1 = UefiMemoryBase
+  //    r2 = StacksBase
   blx   r4
 
-ShouldNeverGetHere:
-  /* _CEntryPoint should never return */
-  b       ShouldNeverGetHere
+_NeverReturn:
+  b _NeverReturn
 
+.align 3
+dead:  
+  b dead 
