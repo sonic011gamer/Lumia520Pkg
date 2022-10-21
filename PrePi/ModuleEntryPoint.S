@@ -40,16 +40,16 @@ _ModuleEntryPoint:
   bl ASM_PFX(ArmReadMpidr)
   mov r8, r0
   /* First ensure all interrupts are disabled */
-  bl ASM_PFX(ArmDisableInterrupts)
+//  bl ASM_PFX(ArmDisableInterrupts)
 
   /* Ensure that the MMU and caches are off */
-  bl ASM_PFX(ArmDisableCachesAndMmu)
+//  bl ASM_PFX(ArmDisableCachesAndMmu)
  
   /* Invalide I-Cache */
-  bl ASM_PFX(ArmInvalidateInstructionCache)
+//  bl ASM_PFX(ArmInvalidateInstructionCache)
   
   /* Invalidate TLB */
-  bl ASM_PFX(ArmInvalidateTlb)
+//  bl ASM_PFX(ArmInvalidateTlb)
 
  //Disable L2 cache
   mrc     p15, 0, r0, c1, c0, 1   // read Auxiliary Control Register
@@ -84,8 +84,8 @@ _SetupExceptionVector:
 
 _FillVectors:
   str     r1, [r0, r2]
-  adds    r2, r2, #8      /* Fill every 8 byte */
-  cmp     r2, #0x800      /* Vector Table Size */
+  adds    r2, r2, #4
+  cmp     r2, #32
   bne     _FillVectors
     
 _SetupPrimaryCoreStack:
