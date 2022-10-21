@@ -50,7 +50,7 @@ _ModuleEntryPoint:
   
   /* Invalidate TLB */
   bl ASM_PFX(ArmInvalidateTlb)
-  
+
  //Disable L2 cache
   mrc     p15, 0, r0, c1, c0, 1   // read Auxiliary Control Register
   bic     r0, r0, #0x00000002     // disable L2 cache
@@ -71,8 +71,14 @@ _ModuleEntryPoint:
   mov     r0, #0x40000000       // Set EN bit in FPEXC
   mcr     p10,#0x7,r0,c8,c0,#0  // msr     FPEXC,r0 in ARM assembly
 
+
 _SetupExceptionVector:
+// Set CPU vectors to start of DRAM
+  LoadConstantToReg (FixedPcdGet32(PcdCpuVectorBaseAddress) ,r0) // Get vector base
+  mcr     p15, 0, r0, c12, c0, 0
+  isb                               // Sync changes to control registers
   LoadConstantToReg (FixedPcdGet32(PcdCpuVectorBaseAddress), r0)
+  // Fill vector table with branchs to current pc (jmp $)
   ldr r1, dead
   mov r2, #0
 
