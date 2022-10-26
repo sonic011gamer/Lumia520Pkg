@@ -36,8 +36,8 @@ GCC_ASM_EXPORT(_ModuleEntryPoint)
 
 ASM_PFX(_ModuleEntryPoint):
   mov r0, #0
-  bl ASM_PFX(ArmReadMpidr)
-  mov r8, r0
+//  bl ASM_PFX(ArmReadMpidr)
+//  mov r8, r0
   
   //Disable L2 cache
   mrc     p15, 0, r0, c1, c0, 1   // read Auxiliary Control Register
@@ -94,7 +94,7 @@ stack_pointer_setup:
 
 _PrepareArguments:
 
-	mov   r0, r8
+//	mov   r0, r8
 	ldr   r1, _StackBase
 	ldr   r2, _StackSize
 	mov   r3, sp
