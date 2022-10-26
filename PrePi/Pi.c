@@ -1,31 +1,25 @@
 // Pi.c: Entry point for SEC(Security).
 
-#include "Pi.h"
-
-#include <Pi/PiBootMode.h>
-#include <Pi/PiHob.h>
-#include <PiDxe.h>
 #include <PiPei.h>
 
-#include <Configuration/Hob.h>
-#include <Guid/LzmaDecompress.h>
-#include <Ppi/GuidedSectionExtraction.h>
-
-#include <Library/ArmLib.h>
-#include <Library/BaseMemoryLib.h>
-#include <Library/CacheMaintenanceLib.h>
-#include <Library/DebugAgentLib.h>
+#include <Pi/PiHob.h>
 #include <Library/DebugLib.h>
-#include <Library/FrameBufferSerialPortLib.h>
-#include <Library/HobLib.h>
-#include <Library/IoLib.h>
-#include <Library/MemoryAllocationLib.h>
-#include <Library/PcdLib.h>
-#include <Library/PeCoffGetEntryPointLib.h>
-#include <Library/PerformanceLib.h>
-#include <Library/PrePiHobListPointerLib.h>
 #include <Library/PrePiLib.h>
+#include <Library/PcdLib.h>
+#include <Library/IoLib.h>
+#include <Library/HobLib.h>
+#include <Library/ArmLib.h>
+#include <Library/PeCoffGetEntryPointLib.h>
+#include <Library/PrePiHobListPointerLib.h>
+#include <Library/DebugAgentLib.h>
+#include <Ppi/GuidedSectionExtraction.h>
+#include <Guid/LzmaDecompress.h>
 #include <Library/SerialPortLib.h>
+#include <Library/MemoryAllocationLib.h>
+#include <Library/BaseMemoryLib.h>
+#include <Library/FrameBufferSerialPortLib.h>
+#include <Library/TimerLib.h>
+#include <Library/PerformanceLib.h>
 
 VOID EFIAPI ProcessLibraryConstructorList(VOID);
 
