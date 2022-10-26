@@ -1,7 +1,6 @@
 // Pi.c: Entry point for SEC(Security).
 
 #include "Pi.h"
-#include "HvcPatch.h"
 
 #include <Pi/PiBootMode.h>
 #include <Pi/PiHob.h>
