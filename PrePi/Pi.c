@@ -67,8 +67,6 @@ Main
     // Initialize UART.
     UartInit();
 
-    // StackSize = FixedPcdGet32 (PcdCoreCount) * PcdGet32 (PcdCPUCorePrimaryStackSize);
-    
     // Declare UEFI region
     MemoryBase      = FixedPcdGet32(PcdSystemMemoryBase);
     MemorySize      = FixedPcdGet32(PcdSystemMemorySize);
@@ -84,6 +82,8 @@ Main
     StackBase  // The top of the UEFI Memory is reserved for the stacks
     );
     //PrePeiSetHobList (HobList);
+
+    StackSize = FixedPcdGet32 (PcdCoreCount) * PcdGet32 (PcdCPUCorePrimaryStackSize);
 
     DEBUG((
         EFI_D_INFO | EFI_D_LOAD,
@@ -103,23 +103,13 @@ Main
     }else{
        DEBUG((EFI_D_INFO | EFI_D_LOAD, "MMU configured\n"));
     }
-
-    // Initialize GIC
-/*    Status = QGicPeim();
-    if (EFI_ERROR(Status))
-    {
-      DEBUG((EFI_D_ERROR, "Failed to configure GIC\n"));
-      CpuDeadLoop();
-    }
-    DEBUG((EFI_D_INFO | EFI_D_LOAD, "GIC configured\n"));
-
-*/
   // Create the Stacks HOB (reserve the memory for all stacks)	
+
   BuildStackHob ((UINTN)StackBase, StackSize);
   DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stacks allocated!\n"));
   
   //TODO: Call CpuPei as a library
-  BuildCpuHob (40, PcdGet8 (PcdPrePiCpuIoSize));
+  BuildCpuHob (ArmGetPhysicalAddressBits (), PcdGet8 (PcdPrePiCpuIoSize));
   // Store timer value logged at the beginning of firmware image execution
   //Performance.ResetEnd = GetTimeInNanoSecond (StartTimeStamp);
 
@@ -127,7 +117,7 @@ Main
   //BuildGuidDataHob (&gEfiFirmwarePerformanceGuid, &Performance, sizeof (Performance));
 
   // Set the Boot Mode
-  SetBootMode(BOOT_WITH_FULL_CONFIGURATION);
+  SetBootMode (ArmPlatformGetBootMode ());
 
   // Initialize Platform HOBs (CpuHob and FvHob)
   Status = PlatformPeim ();
@@ -176,7 +166,7 @@ CEntryPoint
 (
     	IN  UINTN                     			  MpId,
 	IN  VOID  					  *StackBase,
-	IN  UINTN 					  StackSize
+	IN  UINTN 					   StackSize
 )
 {
    UINT64 StartTimeStamp;
