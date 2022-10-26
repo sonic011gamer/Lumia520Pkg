@@ -26,18 +26,21 @@
   RVCT:*_*_ARM_DLINK_FLAGS = --scatter $(EDK_TOOLS_PATH)/Scripts/Rvct-Align4K.sct
 
 [PcdsFeatureFlag.common]
+
   gEfiMdePkgTokenSpaceGuid.PcdComponentNameDisable|TRUE
   gEfiMdePkgTokenSpaceGuid.PcdDriverDiagnosticsDisable|TRUE
   gEfiMdePkgTokenSpaceGuid.PcdComponentName2Disable|TRUE
   gEfiMdePkgTokenSpaceGuid.PcdDriverDiagnostics2Disable|TRUE
   gEmbeddedTokenSpaceGuid.PcdPrePiProduceMemoryTypeInformationHob|TRUE
-  gArmTokenSpaceGuid.PcdCpuDxeProduceDebugSupport|FALSE
+  gArmTokenSpaceGuid.PcdCpuDxeProduceDebugSupport|TRUE
+  # Use the Vector Table location in CpuDxe. We will not copy the Vector Table at PcdCpuVectorBaseAddress
+  gArmTokenSpaceGuid.PcdRelocateVectorTable|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutGopSupport|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdSupportUpdateCapsuleReset|TRUE
 
 [PcdsFixedAtBuild.common]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"The red fame owned by the blue mass"
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Falling blue snow"
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"1.01"
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId|"QCOM  "
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId|0x324B44454D4F4351
@@ -56,15 +59,34 @@
   gEfiMdePkgTokenSpaceGuid.PcdPostCodePropertyMask|0
   gEfiMdePkgTokenSpaceGuid.PcdUefiLibMaxPrintBufferSize|320
   gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2f
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x800fee0f
+
+#  DEBUG_INIT      0x00000001  // Initialization
+#  DEBUG_WARN      0x00000002  // Warnings
+#  DEBUG_LOAD      0x00000004  // Load events
+#  DEBUG_FS        0x00000008  // EFI File system
+#  DEBUG_POOL      0x00000010  // Alloc & Free's
+#  DEBUG_PAGE      0x00000020  // Alloc & Free's
+#  DEBUG_INFO      0x00000040  // Verbose
+#  DEBUG_DISPATCH  0x00000080  // PEI/DXE Dispatchers
+#  DEBUG_VARIABLE  0x00000100  // Variable
+#  DEBUG_BM        0x00000400  // Boot Manager
+#  DEBUG_BLKIO     0x00001000  // BlkIo Driver
+#  DEBUG_NET       0x00004000  // SNI Driver
+#  DEBUG_UNDI      0x00010000  // UNDI Driver
+#  DEBUG_LOADFILE  0x00020000  // UNDI Driver
+#  DEBUG_EVENT     0x00080000  // Event messages
+#  DEBUG_ERROR     0x80000000  // Error
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x800B45CF
+
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07
+
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIReclaimMemory|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIMemoryNVS|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiReservedMemoryType|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|80
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|40
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|400
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData|800
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData|3000
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode|10
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderData|0
 

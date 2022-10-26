@@ -23,15 +23,6 @@
 
 #include <PiDxe.h>
 #include "Pi.h"
-// #include <PreInitializeVariableInfo.h>
-
-
-#define IS_XIP() (((UINT64)FixedPcdGet64 (PcdFdBaseAddress) > mSystemMemoryEnd) || \
-                  ((FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) < FixedPcdGet64 (PcdSystemMemoryBase)))
-
-UINT64 mSystemMemoryEnd = FixedPcdGet64(PcdSystemMemoryBase) +
-                          FixedPcdGet64(PcdSystemMemorySize) - 1;
-
 STATIC VOID
 UartInit
 (
@@ -56,7 +47,7 @@ Main
 	IN UINT64   StartTimeStamp
 )
 {
-	EFI_HOB_HANDOFF_INFO_TABLE*   HobList;
+	  EFI_HOB_HANDOFF_INFO_TABLE*   HobList;
     EFI_STATUS                    Status;
 
     UINTN                           MemoryBase = 0;
@@ -72,18 +63,16 @@ Main
     MemorySize      = FixedPcdGet32(PcdSystemMemorySize);
     UefiMemoryBase  = MemoryBase + FixedPcdGet32(PcdPreAllocatedMemorySize);
     UefiMemorySize  = FixedPcdGet32(PcdUefiMemPoolSize);
-    StackBase       = (VOID*) (UefiMemoryBase + UefiMemorySize - StackSize);
+    StackBase       = (VOID*) (UefiMemoryBase + UefiMemorySize - StackSize); 
 
-    //Declear the PI/UEFI memory region
+    //Declare the PI/UEFI memory region
     HobList = HobConstructor (
     (VOID*)UefiMemoryBase,
     UefiMemorySize,
     (VOID*)UefiMemoryBase,
     StackBase  // The top of the UEFI Memory is reserved for the stacks
     );
-    //PrePeiSetHobList (HobList);
-
-    StackSize = FixedPcdGet32 (PcdCoreCount) * PcdGet32 (PcdCPUCorePrimaryStackSize);
+    PrePeiSetHobList (HobList);
 
     DEBUG((
         EFI_D_INFO | EFI_D_LOAD,
@@ -93,7 +82,7 @@ Main
         StackBase,
         StackSize
     ));
-    PrePeiSetHobList(HobList);
+
     // Initialize MMU and Memory HOBs (Resource Descriptor HOBs)
     Status = MemoryPeim (UefiMemoryBase, UefiMemorySize);
     if (EFI_ERROR(Status))
@@ -104,17 +93,20 @@ Main
        DEBUG((EFI_D_INFO | EFI_D_LOAD, "MMU configured\n"));
     }
   // Create the Stacks HOB (reserve the memory for all stacks)	
+    StackSize = PcdGet32 (PcdCPUCorePrimaryStackSize) +
+                 ((FixedPcdGet32 (PcdCoreCount) - 1) * FixedPcdGet32 (PcdCPUCoreSecondaryStackSize));
 
   BuildStackHob ((UINTN)StackBase, StackSize);
   DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stacks allocated!\n"));
   
   //TODO: Call CpuPei as a library
   BuildCpuHob (ArmGetPhysicalAddressBits (), PcdGet8 (PcdPrePiCpuIoSize));
+
   // Store timer value logged at the beginning of firmware image execution
-  //Performance.ResetEnd = GetTimeInNanoSecond (StartTimeStamp);
+  // Performance.ResetEnd = GetTimeInNanoSecond (StartTimeStamp);
 
   // Build SEC Performance Data Hob
-  //BuildGuidDataHob (&gEfiFirmwarePerformanceGuid, &Performance, sizeof (Performance));
+  // BuildGuidDataHob (&gEfiFirmwarePerformanceGuid, &Performance, sizeof (Performance));
 
   // Set the Boot Mode
   SetBootMode (ArmPlatformGetBootMode ());
@@ -137,25 +129,11 @@ Main
 
   // Assume the FV that contains the SEC (our code) also contains a compressed FV.
   Status = DecompressFirstFv ();
-  //ASSERT_EFI_ERROR (Status);
-    if (EFI_ERROR(Status))
-    {
-        DEBUG((EFI_D_ERROR, "FV does not contains a compressed FV\n"));
-    }else{
-       DEBUG((EFI_D_INFO | EFI_D_LOAD, "FV contains a compressed FV\n"));
-  }
+  ASSERT_EFI_ERROR (Status);
 
   // Load the DXE Core and transfer control to it
   Status = LoadDxeCoreFromFv (NULL, 0);
-  if (EFI_ERROR(Status))
-    {
-        DEBUG((EFI_D_ERROR, "Failed to load DXE Core\n"));
-    }else{
-       DEBUG((EFI_D_INFO | EFI_D_LOAD, "Loading DXE Core\n"));
-  }
-
-
-
+  ASSERT_EFI_ERROR (Status);
 
     // We are done
     CpuDeadLoop();
@@ -164,22 +142,10 @@ Main
 VOID
 CEntryPoint
 (
-    	IN  UINTN                     			  MpId,
 	IN  VOID  					  *StackBase,
 	IN  UINTN 					   StackSize
 )
 {
-   UINT64 StartTimeStamp;
-   ArmPlatformInitialize (MpId);
-
-   if (ArmPlatformIsPrimaryCore (MpId) && PerformanceMeasurementEnabled ()) {
-	       // Initialize the Timer Library to setup the Timer HW controller
-		    TimerConstructor ();
-		   // We cannot call yet the PerformanceLib because the HOB List has not been initialized
-			StartTimeStamp = GetPerformanceCounter ();
-   } else {
-			StartTimeStamp = 0;
-		  }
 
   // Data Cache enabled on Primary core when MMU is enabled.
   ArmDisableDataCache ();
@@ -190,18 +156,8 @@ CEntryPoint
   // Enable Instruction Caches on all cores.
   ArmEnableInstructionCache ();
 
-  // Define the Global Variable region when we are not running in XIP
-  if (!IS_XIP()) {
-    if (ArmPlatformIsPrimaryCore (MpId)) {
-      if (ArmIsMpCore()) {
-        // Signal the Global Variable Region is defined (event: ARM_CPU_EVENT_DEFAULT)
-        ArmCallSEV ();
-      }
-    } else {
-      // Wait the Primay core has defined the address of the Global Variable region (event: ARM_CPU_EVENT_DEFAULT)
-      ArmCallWFE ();
-    }
-  }
+   Main(StackBase, StackSize, 0);
 
-   Main(StackBase, StackSize, StartTimeStamp);
+  // DXE Core should always load and never return
+  ASSERT (FALSE);
 }
