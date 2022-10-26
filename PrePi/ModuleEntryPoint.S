@@ -14,6 +14,7 @@
 
 #include <AsmMacroIoLib.h>
 #include <Library/PcdLib.h>
+#include <Chipset/ArmV7.h>
 
 .text
 .align 3
@@ -21,11 +22,23 @@
 #define LoadConstantToReg(Data, Reg) \
     ldr Reg, =Data
     
-.globl ASM_PFX(CEntryPoint)
+.global _StackBase 
+.global _StackSize
+
+_StackBase:
+  .quad FixedPcdGet32(PcdPrePiStackBase)
+
+_StackSize:
+  .quad FixedPcdGet32(PcdPrePiStackSize)
+
+GCC_ASM_IMPORT(CEntryPoint)
 GCC_ASM_EXPORT(_ModuleEntryPoint)
 
 ASM_PFX(_ModuleEntryPoint):
-
+  mov r0, #0
+  bl ASM_PFX(ArmReadMpidr)
+  mov r8, r0
+  
   //Disable L2 cache
   mrc     p15, 0, r0, c1, c0, 1   // read Auxiliary Control Register
   bic     r0, r0, #0x00000002     // disable L2 cache
@@ -68,17 +81,33 @@ stack_pointer_setup:
   // Set stack based on PCD values. Need to do it this way to make C code work
   // when it runs from FLASH.
   //
-  LoadConstantToReg (FixedPcdGet32(PcdPrePiStackBase) ,r0)    /* stack base arg0  */
-  LoadConstantToReg (FixedPcdGet32(PcdPrePiStackSize) ,r1)    /* stack size arg1  */
+  ldr r0, _StackBase     /* Stack base arg0 */
+  ldr r1, _StackSize     /* Stack size arg1 */
+  
   add     r4, r0, r1
+  add     sp, r4, #0
 
   //Enter SVC mode and set up SVC stack pointer
   mov     r0,#0x13|0x80|0x40
   msr     CPSR_c,r0
   mov     r13,r4
 
-  // Call C entry point
-  blx      ASM_PFX(CEntryPoint) /* Assume C code is thumb    */
+_PrepareArguments:
+
+	mov   r0, r8
+	ldr   r1, _StackBase
+	ldr   r2, _StackSize
+	mov   r3, sp
+
+  // Move sec startup address into a data register
+  // Ensure we're jumping to FV version of the code (not boot remapped alias)
+  ldr   r4, =ASM_PFX(CEntryPoint)
+
+  // Jump to PrePiCore C code
+  //    r0 = MpId
+  //    r1 = UefiMemoryBase
+  //    r2 = StacksBase
+  blx   r4
 
 ShouldNeverGetHere:
   /* _CEntryPoint should never return */
