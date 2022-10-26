@@ -15,8 +15,8 @@
 #
 
 [BuildOptions.common]
-  GCC:*_*_ARM_CC_FLAGS = -fno-stack-protector -march=armv7-a -mfix-cortex-a9-757119 -mfix-cortex-a9-794073
-  GCC:*_*_ARM_DLINK_FLAGS = -fno-stack-protector -march=armv7-a -mfix-cortex-a9-757119 -mfix-cortex-a9-794073
+  GCC:*_*_ARM_CC_FLAGS = -fno-stack-protector -march=armv7-a
+  GCC:*_*_ARM_DLINK_FLAGS = -fno-stack-protector -march=armv7-a
 
 [BuildOptions.common.EDKII.DXE_CORE,BuildOptions.common.EDKII.DXE_DRIVER,BuildOptions.common.EDKII.UEFI_DRIVER,BuildOptions.common.EDKII.UEFI_APPLICATION]
   GCC:*_*_*_DLINK_FLAGS = -z common-page-size=0x1000 -fno-stack-protector
