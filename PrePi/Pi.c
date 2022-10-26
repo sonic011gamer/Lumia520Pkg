@@ -21,106 +21,184 @@
 #include <Library/TimerLib.h>
 #include <Library/PerformanceLib.h>
 
-VOID EFIAPI ProcessLibraryConstructorList(VOID);
+#include <PiDxe.h>
+#include "Pi.h"
+// #include <PreInitializeVariableInfo.h>
 
-STATIC VOID UartInit(VOID)
+
+#define IS_XIP() (((UINT64)FixedPcdGet64 (PcdFdBaseAddress) > mSystemMemoryEnd) || \
+                  ((FixedPcdGet64 (PcdFdBaseAddress) + FixedPcdGet32 (PcdFdSize)) < FixedPcdGet64 (PcdSystemMemoryBase)))
+
+UINT64 mSystemMemoryEnd = FixedPcdGet64(PcdSystemMemoryBase) +
+                          FixedPcdGet64(PcdSystemMemorySize) - 1;
+
+STATIC VOID
+UartInit
+(
+    VOID
+)
 {
-  SerialPortInitialize();
+    SerialPortInitialize();
+    DEBUG ((EFI_D_ERROR, "\nTianoCore on Microsoft Lumia 520 (ARM)\n"));
+    DEBUG ((EFI_D_ERROR,  "Firmware version %s built %a %a\n\n",
+	        (CHAR16*) PcdGetPtr(PcdFirmwareVersionString),
+			        __TIME__,
+				__DATE__
+	));
 
-  DEBUG((EFI_D_INFO, "\nTianoCore on 520 (ARM)\n"));
-  DEBUG(
-      (EFI_D_INFO, "Firmware version %s built %a %a\n\n",
-       (CHAR16 *)PcdGetPtr(PcdFirmwareVersionString), __TIME__, __DATE__));
 }
 
-VOID Main(IN VOID *StackBase, IN UINTN StackSize, IN UINT64 StartTimeStamp)
+VOID
+Main
+(
+    	IN VOID	    *StackBase,
+	IN UINTN    StackSize,
+	IN UINT64   StartTimeStamp
+)
 {
+	EFI_HOB_HANDOFF_INFO_TABLE*   HobList;
+    EFI_STATUS                    Status;
 
-  EFI_HOB_HANDOFF_INFO_TABLE *HobList;
-  EFI_STATUS                  Status;
+    UINTN                           MemoryBase = 0;
+    UINTN                           MemorySize = 0;
+    UINTN                           UefiMemoryBase = 0;
+    UINTN 			                    UefiMemorySize = 0;
 
-  UINTN MemoryBase     = 0;
-  UINTN MemorySize     = 0;
-  UINTN UefiMemoryBase = 0;
-  UINTN UefiMemorySize = 0;
+    // Initialize UART.
+    UartInit();
 
-  // Architecture-specific initialization
-  // Enable Floating Point
-  ArmEnableVFP();
+    // Declare UEFI region
+    MemoryBase      = FixedPcdGet32(PcdSystemMemoryBase);
+    MemorySize      = FixedPcdGet32(PcdSystemMemorySize);
+    UefiMemoryBase  = MemoryBase + FixedPcdGet32(PcdPreAllocatedMemorySize);
+    UefiMemorySize  = FixedPcdGet32(PcdUefiMemPoolSize);
+    StackBase       = (VOID*) (UefiMemoryBase + UefiMemorySize - StackSize);
 
-  /* Enable program flow prediction, if supported */
-  ArmEnableBranchPrediction();
+    //Declear the PI/UEFI memory region
+    HobList = HobConstructor (
+    (VOID*)UefiMemoryBase,
+    UefiMemorySize,
+    (VOID*)UefiMemoryBase,
+    StackBase  // The top of the UEFI Memory is reserved for the stacks
+    );
+    //PrePeiSetHobList (HobList);
 
-  // Initialize (fake) UART.
-  UartInit();
+    StackSize = FixedPcdGet32 (PcdCoreCount) * PcdGet32 (PcdCPUCorePrimaryStackSize);
 
-  // Declare UEFI region
-  MemoryBase     = FixedPcdGet32(PcdSystemMemoryBase);
-  MemorySize     = FixedPcdGet32(PcdSystemMemorySize);
-  UefiMemoryBase = MemoryBase + FixedPcdGet32(PcdPreAllocatedMemorySize);
-  UefiMemorySize = FixedPcdGet32(PcdUefiMemPoolSize);
-  StackBase      = (VOID *)(UefiMemoryBase + UefiMemorySize - StackSize);
+    DEBUG((
+        EFI_D_INFO | EFI_D_LOAD,
+        "UEFI Memory Base = 0x%p, Size = 0x%p, Stack Base = 0x%p, Stack Size = 0x%p\n",
+        UefiMemoryBase,
+        UefiMemorySize,
+        StackBase,
+        StackSize
+    ));
+    PrePeiSetHobList(HobList);
+    // Initialize MMU and Memory HOBs (Resource Descriptor HOBs)
+    Status = MemoryPeim (UefiMemoryBase, UefiMemorySize);
+    if (EFI_ERROR(Status))
+    {
+        DEBUG((EFI_D_ERROR, "Failed to configure MMU\n"));
+        CpuDeadLoop();
+    }else{
+       DEBUG((EFI_D_INFO | EFI_D_LOAD, "MMU configured\n"));
+    }
 
-  DEBUG(
-      (EFI_D_INFO | EFI_D_LOAD,
-       "UEFI Memory Base = 0x%llx, Size = 0x%llx, Stack Base = 0x%llx, Stack "
-       "Size = 0x%llx\n",
-       UefiMemoryBase, UefiMemorySize, StackBase, StackSize));
+    // Initialize GIC
+/*    Status = QGicPeim();
+    if (EFI_ERROR(Status))
+    {
+      DEBUG((EFI_D_ERROR, "Failed to configure GIC\n"));
+      CpuDeadLoop();
+    }
+    DEBUG((EFI_D_INFO | EFI_D_LOAD, "GIC configured\n"));
 
-  // Set up HOB
-  HobList = HobConstructor(
-      (VOID *)UefiMemoryBase, UefiMemorySize, (VOID *)UefiMemoryBase,
-      StackBase);
+*/
+  // Create the Stacks HOB (reserve the memory for all stacks)	
 
-  PrePeiSetHobList(HobList);
+  BuildStackHob ((UINTN)StackBase, StackSize);
+  
+  //TODO: Call CpuPei as a library
+  BuildCpuHob (ArmGetPhysicalAddressBits (), PcdGet8 (PcdPrePiCpuIoSize));
+  // Store timer value logged at the beginning of firmware image execution
+  //Performance.ResetEnd = GetTimeInNanoSecond (StartTimeStamp);
 
-  // Invalidate cache
-  InvalidateDataCacheRange(
-      (VOID *)(UINTN)PcdGet64(PcdFdBaseAddress), PcdGet32(PcdFdSize));
-
-  // Initialize MMU
-  Status = MemoryPeim(UefiMemoryBase, UefiMemorySize);
-
-  if (EFI_ERROR(Status)) {
-    DEBUG((EFI_D_ERROR, "Failed to configure MMU\n"));
-    CpuDeadLoop();
-  }
-
-  DEBUG((EFI_D_LOAD | EFI_D_INFO, "MMU configured from device config\n"));
-
-  // Add HOBs
-  BuildStackHob((UINTN)StackBase, StackSize);
-
-  // TODO: Call CpuPei as a library
-  BuildCpuHob(40, PcdGet8(PcdPrePiCpuIoSize));
+  // Build SEC Performance Data Hob
+  //BuildGuidDataHob (&gEfiFirmwarePerformanceGuid, &Performance, sizeof (Performance));
 
   // Set the Boot Mode
   SetBootMode(BOOT_WITH_FULL_CONFIGURATION);
 
   // Initialize Platform HOBs (CpuHob and FvHob)
-  Status = PlatformPeim();
-  ASSERT_EFI_ERROR(Status);
+  Status = PlatformPeim ();
+  //ASSERT_EFI_ERROR (Status);
+  if (EFI_ERROR(Status))
+    {
+        DEBUG((EFI_D_ERROR, "Failed to Initialize Platform HOBS\n"));
+    }else{
+       DEBUG((EFI_D_INFO | EFI_D_LOAD, "Platform HOBS Initialized\n"));
+  }
 
-  // Now, the HOB List has been initialized, we can register performance
-  // information PERF_START (NULL, "PEI", NULL, StartTimeStamp);
+  // Now, the HOB List has been initialized, we can register performance information
+  // PERF_START (NULL, "PEI", NULL, StartTimeStamp);
 
   // SEC phase needs to run library constructors by hand.
-  ProcessLibraryConstructorList();
+  ProcessLibraryConstructorList ();
 
-  // Assume the FV that contains the PI (our code) also contains a compressed
-  // FV.
-  Status = DecompressFirstFv();
-  ASSERT_EFI_ERROR(Status);
+  // Assume the FV that contains the SEC (our code) also contains a compressed FV.
+  Status = DecompressFirstFv ();
+  //ASSERT_EFI_ERROR (Status);
+    if (EFI_ERROR(Status))
+    {
+        DEBUG((EFI_D_ERROR, "FV does not contains a compressed FV\n"));
+    }else{
+       DEBUG((EFI_D_INFO | EFI_D_LOAD, "FV contains a compressed FV\n"));
+  }
 
   // Load the DXE Core and transfer control to it
-  Status = LoadDxeCoreFromFv(NULL, 0);
-  ASSERT_EFI_ERROR(Status);
+  Status = LoadDxeCoreFromFv (NULL, 0);
+  if (EFI_ERROR(Status))
+    {
+        DEBUG((EFI_D_ERROR, "Failed to load DXE Core\n"));
+    }else{
+       DEBUG((EFI_D_INFO | EFI_D_LOAD, "Loading DXE Core\n"));
+  }
 
-  // We should never reach here
-  CpuDeadLoop();
+
+
+
+    // We are done
+    CpuDeadLoop();
 }
 
-VOID CEntryPoint(IN VOID *StackBase, IN UINTN StackSize)
+VOID
+CEntryPoint
+(
+    	IN  UINTN                     			  MpId,
+	IN  VOID  					  *StackBase,
+	IN  UINTN 					  StackSize
+)
 {
-  Main(StackBase, StackSize, 0);
+   UINT64 StartTimeStamp;
+   ArmPlatformInitialize (MpId);
+
+   if (ArmPlatformIsPrimaryCore (MpId) && PerformanceMeasurementEnabled ()) {
+	       // Initialize the Timer Library to setup the Timer HW controller
+		    TimerConstructor ();
+		   // We cannot call yet the PerformanceLib because the HOB List has not been initialized
+			StartTimeStamp = GetPerformanceCounter ();
+   } else {
+			StartTimeStamp = 0;
+		  }
+
+  // Data Cache enabled on Primary core when MMU is enabled.
+  ArmDisableDataCache ();
+  // Invalidate Data cache
+  ArmInvalidateDataCache ();
+  // Invalidate instruction cache
+  ArmInvalidateInstructionCache ();
+  // Enable Instruction Caches on all cores.
+  ArmEnableInstructionCache ();
+
+  Main(StackBase, StackSize, StartTimeStamp);
 }
