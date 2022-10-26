@@ -15,17 +15,11 @@
 #include <AsmMacroIoLib.h>
 #include <Library/PcdLib.h>
 
-#define LoadConstantToReg(Data, Reg) \
-    ldr Reg, =Data
 .text
 .align 3
 
 .globl ASM_PFX(CEntryPoint)
 GCC_ASM_EXPORT(_ModuleEntryPoint)
-GCC_ASM_IMPORT (ArmWriteCpacr)
-GCC_ASM_IMPORT (ArmEnableInstructionCache)
-GCC_ASM_IMPORT (ArmEnableDataCache)
-GCC_ASM_IMPORT (ArmInvalidateTlb)
 
 ASM_PFX(_ModuleEntryPoint):
 
@@ -80,14 +74,9 @@ stack_pointer_setup:
   msr     CPSR_c,r0
   mov     r13,r4
 
-
-  // Move sec startup address into a data register
-  // Ensure we're jumping to FV version of the code (not boot remapped alias)
-  ldr   r4, =ASM_PFX(CEntryPoint)
   // Call C entry point
-  blx   r4
+  blx      ASM_PFX(CEntryPoint) /* Assume C code is thumb    */
 
 ShouldNeverGetHere:
   /* _CEntryPoint should never return */
   b       ShouldNeverGetHere
-
