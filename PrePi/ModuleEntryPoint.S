@@ -18,6 +18,9 @@
 .text
 .align 3
 
+#define LoadConstantToReg(Data, Reg) \
+    ldr Reg, =Data
+    
 .globl ASM_PFX(CEntryPoint)
 GCC_ASM_EXPORT(_ModuleEntryPoint)
 
