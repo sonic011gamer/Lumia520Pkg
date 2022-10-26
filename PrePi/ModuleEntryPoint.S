@@ -84,9 +84,9 @@ stack_pointer_setup:
   add     sp, r4, #0
 
   //Enter SVC mode and set up SVC stack pointer
-  mov     r0,#0x13|0x80|0x40
+/*mov     r0,#0x13|0x80|0x40
   msr     CPSR_c,r0
-  mov     r13,r4
+  mov     r13,r4 */
 
 _PrepareArguments:
 
