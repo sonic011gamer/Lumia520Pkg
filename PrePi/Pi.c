@@ -51,7 +51,7 @@ UartInit
 VOID
 Main
 (
-    	IN VOID	    *StackBase,
+  IN VOID	    *StackBase,
 	IN UINTN    StackSize,
 	IN UINT64   StartTimeStamp
 )
@@ -67,6 +67,8 @@ Main
     // Initialize UART.
     UartInit();
 
+    // StackSize = FixedPcdGet32 (PcdCoreCount) * PcdGet32 (PcdCPUCorePrimaryStackSize);
+    
     // Declare UEFI region
     MemoryBase      = FixedPcdGet32(PcdSystemMemoryBase);
     MemorySize      = FixedPcdGet32(PcdSystemMemorySize);
@@ -82,8 +84,6 @@ Main
     StackBase  // The top of the UEFI Memory is reserved for the stacks
     );
     //PrePeiSetHobList (HobList);
-
-    StackSize = FixedPcdGet32 (PcdCoreCount) * PcdGet32 (PcdCPUCorePrimaryStackSize);
 
     DEBUG((
         EFI_D_INFO | EFI_D_LOAD,
@@ -115,11 +115,11 @@ Main
 
 */
   // Create the Stacks HOB (reserve the memory for all stacks)	
-
   BuildStackHob ((UINTN)StackBase, StackSize);
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stacks allocated!\n"));
   
   //TODO: Call CpuPei as a library
-  BuildCpuHob (ArmGetPhysicalAddressBits (), PcdGet8 (PcdPrePiCpuIoSize));
+  BuildCpuHob (40, PcdGet8 (PcdPrePiCpuIoSize));
   // Store timer value logged at the beginning of firmware image execution
   //Performance.ResetEnd = GetTimeInNanoSecond (StartTimeStamp);
 
@@ -200,5 +200,18 @@ CEntryPoint
   // Enable Instruction Caches on all cores.
   ArmEnableInstructionCache ();
 
-  Main(StackBase, StackSize, StartTimeStamp);
+  // Define the Global Variable region when we are not running in XIP
+  if (!IS_XIP()) {
+    if (ArmPlatformIsPrimaryCore (MpId)) {
+      if (ArmIsMpCore()) {
+        // Signal the Global Variable Region is defined (event: ARM_CPU_EVENT_DEFAULT)
+        ArmCallSEV ();
+      }
+    } else {
+      // Wait the Primay core has defined the address of the Global Variable region (event: ARM_CPU_EVENT_DEFAULT)
+      ArmCallWFE ();
+    }
+  }
+
+   Main(StackBase, StackSize, StartTimeStamp);
 }
