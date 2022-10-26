@@ -142,8 +142,9 @@ Main
 VOID
 CEntryPoint
 (
+  IN  UINTN             MpId,
 	IN  VOID  					  *StackBase,
-	IN  UINTN 					   StackSize
+	IN  UINTN 					  StackSize
 )
 {
 
