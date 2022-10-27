@@ -55,6 +55,9 @@ ASM_PFX(_ModuleEntryPoint):
   mov     r0, #0x40000000       // Set EN bit in FPEXC
   mcr     p10,#0x7,r0,c8,c0,#0  // msr     FPEXC,r0 in ARM assembly
 
+	mrclt	p15, 0, r0, c15, c0, 1		// read diagnostic register
+	orrlt	r0, r0, #1 << 11		// set bit #11
+	mcrlt	p15, 0, r0, c15, c0, 1		// write diagnostic register
 
   // Set CPU vectors to start of DRAM
   LoadConstantToReg (FixedPcdGet32(PcdCpuVectorBaseAddress) ,r0) // Get vector base
