@@ -102,6 +102,8 @@
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x02000000
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x02002000
 
+  gArmTokenSpaceGuid.PcdVFPEnabled|0x01
+
   #1 ticks about 148ns
   gEmbeddedTokenSpaceGuid.PcdEmbeddedPerformanceCounterPeriodInNanoseconds  |148
   
