@@ -14,27 +14,18 @@
 
 #include <AsmMacroIoLib.h>
 #include <Library/PcdLib.h>
-#include <Chipset/ArmV7.h>
 
 .text
 .align 3
 
+.globl ASM_PFX(CEntryPoint)
+GCC_ASM_EXPORT(_ModuleEntryPoint)
+
 #define LoadConstantToReg(Data, Reg) \
     ldr Reg, =Data
     
-.global _StackBase 
-.global _StackSize
+ASM_PFX(_ModuleEntryPoint):
 
-_StackBase:
-  .quad FixedPcdGet32(PcdPrePiStackBase)
-
-_StackSize:
-  .quad FixedPcdGet32(PcdPrePiStackSize)
-
-GCC_ASM_IMPORT(CEntryPoint)
-GCC_ASM_EXPORT(_ModuleEntryPoint)
-
-ASM_PFX(_ModuleEntryPoint):  
   //Disable L2 cache
   mrc     p15, 0, r0, c1, c0, 1   // read Auxiliary Control Register
   bic     r0, r0, #0x00000002     // disable L2 cache
@@ -54,6 +45,7 @@ ASM_PFX(_ModuleEntryPoint):
   mcr     p15, 0, r0, c1, c0, 2
   mov     r0, #0x40000000       // Set EN bit in FPEXC
   mcr     p10,#0x7,r0,c8,c0,#0  // msr     FPEXC,r0 in ARM assembly
+
 
   // Set CPU vectors to start of DRAM
   LoadConstantToReg (FixedPcdGet32(PcdCpuVectorBaseAddress) ,r0) // Get vector base
@@ -76,34 +68,19 @@ stack_pointer_setup:
   // Set stack based on PCD values. Need to do it this way to make C code work
   // when it runs from FLASH.
   //
-  ldr r0, _StackBase     /* Stack base arg0 */
-  ldr r1, _StackSize     /* Stack size arg1 */
-  
+  LoadConstantToReg (FixedPcdGet32(PcdPrePiStackBase) ,r0)    /* stack base arg0  */
+  LoadConstantToReg (FixedPcdGet32(PcdPrePiStackSize) ,r1)    /* stack size arg1  */
   add     r4, r0, r1
-  add     sp, r4, #0
 
   //Enter SVC mode and set up SVC stack pointer
-/*mov     r0,#0x13|0x80|0x40
-  msr     CPSR_c,r0
-  mov     r13,r4 */
+  mov     r5,#0x13|0x80|0x40
+  msr     CPSR_c,r5
+  mov     r13,r4
 
-_PrepareArguments:
-
-	mov   r0, #0
-	ldr   r1, _StackBase
-	ldr   r2, _StackSize
-	mov   r3, sp
-
-  // Move sec startup address into a data register
-  // Ensure we're jumping to FV version of the code (not boot remapped alias)
-  ldr   r4, =ASM_PFX(CEntryPoint)
-
-  // Jump to PrePiCore C code
-  //    r0 = MpId
-  //    r1 = UefiMemoryBase
-  //    r2 = StacksBase
-  blx   r4
+  // Call C entry point
+  blx      ASM_PFX(CEntryPoint) /* Assume C code is thumb    */
 
 ShouldNeverGetHere:
   /* _CEntryPoint should never return */
   b       ShouldNeverGetHere
+

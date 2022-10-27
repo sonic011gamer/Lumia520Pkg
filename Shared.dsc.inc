@@ -48,7 +48,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId|0x4D4F4351
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision|0x00000001
 
-# gEmbeddedTokenSpaceGuid.PcdPrePiCpuMemorySize|32
+# gEmbeddedTokenSpaceGuid.PcdPrePiCpuMemorySize|40
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|0
   gEfiMdePkgTokenSpaceGuid.PcdMaximumUnicodeStringLength|1000000
   gEfiMdePkgTokenSpaceGuid.PcdMaximumAsciiStringLength|1000000
@@ -76,7 +76,7 @@
 #  DEBUG_LOADFILE  0x00020000  // UNDI Driver
 #  DEBUG_EVENT     0x00080000  // Event messages
 #  DEBUG_ERROR     0x80000000  // Error
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x800B45CF
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8FEF4DCF
 
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07
 
