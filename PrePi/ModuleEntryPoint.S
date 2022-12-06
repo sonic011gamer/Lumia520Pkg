@@ -40,11 +40,11 @@ ASM_PFX(_ModuleEntryPoint):
     //Invalidate TLB
   bl      ArmInvalidateTlb
 
-  //Enable Strict alignment checking & Instruction cache
+  //Disable Strict alignment checking & Enable Instruction cache
   mrc     p15, 0, r0, c1, c0, 0
   bic     r0, r0, #0x00002300     /* clear bits 13, 9:8 (--V- --RS) */
   bic     r0, r0, #0x00000005     /* clear bits 0, 2 (---- -C-M) */
-  //orr     r0, r0, #0x00000002     /* set bit 1 (A) Align */
+  bic     r0, r0, #0x00000002     /* Clear bit 1 (Alignment faults) */
   orr     r0, r0, #0x00001000     /* set bit 12 (I) enable I-Cache */
   mcr     p15, 0, r0, c1, c0, 0
 
@@ -53,7 +53,7 @@ ASM_PFX(_ModuleEntryPoint):
   orr     r0, r0, #0x00f00000   // Enable VPF access (V* instructions)
   mcr     p15, 0, r0, c1, c0, 2
   mov     r0, #0x40000000       // Set EN bit in FPEXC
-  mcr     p10,#0x7,r0,c8,c0,#0  // msr     FPEXC,r0 in ARM assembly
+  msr     FPEXC,r0
 
 
   // Set CPU vectors to start of DRAM

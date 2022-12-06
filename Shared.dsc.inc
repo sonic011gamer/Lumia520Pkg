@@ -136,7 +136,7 @@
   FrameBufferBltLib|MdeModulePkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   HiiLib|MdeModulePkg/Library/UefiHiiLib/UefiHiiLib.inf
-  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  TimerLib|Lumia535Pkg/Library/TargetTimerLib/TimerLib.inf
   IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
   LzmaDecompressLib|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
   NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
