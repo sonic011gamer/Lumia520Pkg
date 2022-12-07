@@ -17,7 +17,7 @@
   CONSTRUCTOR                    = ArmArchTimerLibConstructor
 
 [Sources.common]
-  TimerDxe.c
+  TimerLib.c
 
 [Packages]
   MdePkg/MdePkg.dec
