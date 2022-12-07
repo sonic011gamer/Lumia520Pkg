@@ -40,26 +40,15 @@ TimerConstructor (
       //
       ASSERT (TICKS_PER_MICRO_SEC);
 
- #ifdef MDE_CPU_ARM
       //
       // Only set the frequency for ARMv7. We expect the secure firmware to
       // have already done it.
       // If the security extension is not implemented, set Timer Frequency
       // here.
       //
-      if (ArmHasSecurityExtensions ()) {
         ArmGenericTimerSetTimerFreq (PcdGet32 (PcdArmArchTimerFreqInHz));
-      }
 
- #endif
     }
-
-    //
-    // Architectural Timer Frequency must be set in Secure privileged
-    // mode (if secure extension is supported).
-    // If the reset value (0) is returned, just ASSERT.
-    //
-    ASSERT (ArmGenericTimerGetTimerFreq () != 0);
 
   return RETURN_SUCCESS;
 }
@@ -78,9 +67,6 @@ GetPlatformTimerFreq (
   UINTN  TimerFreq;
 
   TimerFreq = PcdGet32 (PcdArmArchTimerFreqInHz);
-  if (TimerFreq == 0) {
-    TimerFreq = ArmGenericTimerGetTimerFreq ();
-  }
 
   return TimerFreq;
 }
