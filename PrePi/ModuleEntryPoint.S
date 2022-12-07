@@ -1,29 +1,32 @@
-#------------------------------------------------------------------------------
-#
-# Copyright (c) 2008 - 2009, Apple Inc. All rights reserved.<BR>
-#
-# This program and the accompanying materials
-# are licensed and made available under the terms and conditions of the BSD License
-# which accompanies this distribution.  The full text of the license may be found at
-# http://opensource.org/licenses/bsd-license.php
-#
-# THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
-# WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
-#
-#------------------------------------------------------------------------------
+//------------------------------------------------------------------------------ 
+//
+// Copyright (c) 2010-2014, Qualcomm Technologies Inc. All rights reserved.
+// Portions Copyright (c) 2008 - 2009, Apple Inc. All rights reserved.
+//
+// This program and the accompanying materials
+// are licensed and made available under the terms and conditions of the BSD License
+// which accompanies this distribution.  The full text of the license may be found at
+// http://opensource.org/licenses/bsd-license.php
+//  
+// THE PROGRAM IS DISTRIBUTED UNDER THE BSD LICENSE ON AN "AS IS" BASIS,
+// WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
+//
+//------------------------------------------------------------------------------
 
 #include <AsmMacroIoLib.h>
 #include <Library/PcdLib.h>
 
+#define LoadConstantToReg(Data, Reg) \
+    ldr Reg, =Data
 .text
 .align 3
 
 .globl ASM_PFX(CEntryPoint)
 GCC_ASM_EXPORT(_ModuleEntryPoint)
+GCC_ASM_IMPORT (ArmEnableInstructionCache)
+GCC_ASM_IMPORT (ArmEnableDataCache)
+GCC_ASM_IMPORT (ArmInvalidateTlb)
 
-#define LoadConstantToReg(Data, Reg) \
-    ldr Reg, =Data
-    
 ASM_PFX(_ModuleEntryPoint):
 
   //Disable L2 cache
@@ -31,11 +34,17 @@ ASM_PFX(_ModuleEntryPoint):
   bic     r0, r0, #0x00000002     // disable L2 cache
   mcr     p15, 0, r0, c1, c0, 1   // store Auxiliary Control Register
 
-  //Enable Strict alignment checking & Instruction cache
+  //Invalidate instruction cache
+  bl      ArmInvalidateInstructionCache
+
+    //Invalidate TLB
+  bl      ArmInvalidateTlb
+
+  //Disable Strict alignment checking & Enable Instruction cache
   mrc     p15, 0, r0, c1, c0, 0
   bic     r0, r0, #0x00002300     /* clear bits 13, 9:8 (--V- --RS) */
   bic     r0, r0, #0x00000005     /* clear bits 0, 2 (---- -C-M) */
-  //orr     r0, r0, #0x00000002     /* set bit 1 (A) Align */
+  bic     r0, r0, #0x00000002     /* Clear bit 1 (Alignment faults) */
   orr     r0, r0, #0x00001000     /* set bit 12 (I) enable I-Cache */
   mcr     p15, 0, r0, c1, c0, 0
 
@@ -77,8 +86,13 @@ stack_pointer_setup:
   msr     CPSR_c,r5
   mov     r13,r4
 
+  //Invalidate data cache
+  bl      ArmInvalidateDataCache
+  LoadConstantToReg (FixedPcdGet32(PcdPrePiStackBase) ,r0)    // stack base arg0  
+  LoadConstantToReg (FixedPcdGet32(PcdPrePiStackSize) ,r1)    // stack size arg1
+
   // Call C entry point
-  blx      ASM_PFX(CEntryPoint) /* Assume C code is thumb    */
+  blx      CEntryPoint /* Assume C code is thumb    */
 
 ShouldNeverGetHere:
   /* _CEntryPoint should never return */
