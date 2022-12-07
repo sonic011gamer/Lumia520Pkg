@@ -1,20 +1,18 @@
 #/** @file
 #
-#    Component description file for Timer DXE module
-#
-#  Copyright (c) 2009 - 2010, Apple Inc. All rights reserved.<BR>
+#  Copyright (c) 2011 - 2014, ARM Limited. All rights reserved.<BR>
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 #**/
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = ArmTimerDxe
-  FILE_GUID                      = 49ea041e-6752-42ca-b0b1-7344fe2546b7
+  BASE_NAME                      = ArmArchTimerLib
+  FILE_GUID                      = 82da1b44-d2d6-4a7d-bbf0-a0cb67964034
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = TimerLib
-  CONSTRUCTOR                    = ArmArchTimerLibConstructor
+  CONSTRUCTOR                    = TimerConstructor
 
 [Sources.common]
   TimerLib.c
@@ -23,15 +21,12 @@
   MdePkg/MdePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   ArmPkg/ArmPkg.dec
-  ArmPlatformPkg/ArmPlatformPkg.dec
-  Lumia535Pkg/Lumia535Pkg.dec
 
 [LibraryClasses]
+  DebugLib
   ArmLib
   BaseLib
-  IoLib
   ArmGenericTimerCounterLib
 
-[Pcd.common]
-  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum
-  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum
+[Pcd]
+  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz
