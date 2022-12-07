@@ -14,7 +14,7 @@
   ModuleEntryPoint.S | GCC
 
 [BuildOptions.ARM]
-  GCC:*_*_*_CC_FLAGS = -Werror -Wno-error=unused-function 
+  GCC:*_*_*_CC_FLAGS = -Werror -Wno-error=unused-function -Wno-int-conversion
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -47,21 +47,34 @@
   PlatformPeiLib
   PrePiHobListPointerLib
   PrePiLib
+  MsmSharedLib
+  MsmClockLib
+  TimerLib
+  MsmTargetLib
 
 [FixedPcd]
-  gArmTokenSpaceGuid.PcdSystemMemoryBase
-  gArmTokenSpaceGuid.PcdSystemMemorySize
   gArmTokenSpaceGuid.PcdCpuVectorBaseAddress
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
   gArmTokenSpaceGuid.PcdFvBaseAddress
   gArmTokenSpaceGuid.PcdFvSize
   gArmTokenSpaceGuid.PcdFdBaseAddress
   gArmTokenSpaceGuid.PcdFdSize
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase
+  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize
+  gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize
+  gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize
   gArmPlatformTokenSpaceGuid.PcdCoreCount
+
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize  
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+
+[Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
-  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
+
   gLumia535PkgTokenSpaceGuid.PcdPreAllocatedMemorySize
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize
+  gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
