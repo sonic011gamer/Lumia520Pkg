@@ -47,10 +47,7 @@
   PlatformPeiLib
   PrePiHobListPointerLib
   PrePiLib
-  MsmSharedLib
-  MsmClockLib
   TimerLib
-  MsmTargetLib
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdCpuVectorBaseAddress
