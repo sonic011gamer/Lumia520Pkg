@@ -24,31 +24,14 @@
   EmbeddedPkg/EmbeddedPkg.dec
   ArmPkg/ArmPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
+  Lumia535Pkg/Lumia535Pkg.dec
 
 [LibraryClasses]
   ArmLib
   BaseLib
-  UefiRuntimeServicesTableLib
-  UefiLib
-  UefiBootServicesTableLib
-  BaseMemoryLib
-  DebugLib
-  UefiDriverEntryPoint
   IoLib
   ArmGenericTimerCounterLib
 
-[Guids]
-
-[Protocols]
-  gEfiTimerArchProtocolGuid
-  gHardwareInterruptProtocolGuid
-
 [Pcd.common]
-  gEmbeddedTokenSpaceGuid.PcdTimerPeriod
   gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerIntrNum
-  gArmTokenSpaceGuid.PcdArmArchTimerVirtIntrNum
-  gArmTokenSpaceGuid.PcdArmArchTimerHypIntrNum
-
-[Depex]
-  gHardwareInterruptProtocolGuid
