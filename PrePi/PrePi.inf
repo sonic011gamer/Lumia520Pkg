@@ -61,6 +61,7 @@
   gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize
   gArmPlatformTokenSpaceGuid.PcdCPUCoreSecondaryStackSize
   gArmPlatformTokenSpaceGuid.PcdCoreCount
+
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize  
 
 [Pcd]
@@ -68,6 +69,10 @@
   gArmTokenSpaceGuid.PcdSystemMemorySize
 
 [Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
+  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolBase
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize
   gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
