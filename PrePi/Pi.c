@@ -58,12 +58,12 @@ Main
     // Initialize UART.
     UartInit();
 
-    // Declare UEFI region
-    MemoryBase      = FixedPcdGet32(PcdSystemMemoryBase);
-    MemorySize      = FixedPcdGet32(PcdSystemMemorySize);
-    UefiMemoryBase  = MemoryBase + FixedPcdGet32(PcdPreAllocatedMemorySize);
-    UefiMemorySize  = FixedPcdGet32(PcdUefiMemPoolSize);
-    StackBase       = (VOID*) (UefiMemoryBase + UefiMemorySize - StackSize); 
+   // Declare UEFI region
+  MemoryBase     = FixedPcdGet32(PcdSystemMemoryBase);
+  MemorySize     = FixedPcdGet32(PcdSystemMemorySize);
+  UefiMemoryBase = FixedPcdGet32(PcdUefiMemPoolBase);
+  UefiMemorySize = FixedPcdGet32(PcdUefiMemPoolSize);
+  StackBase      = (VOID*) (UefiMemoryBase + UefiMemorySize - StackSize);
 
     //Declare the PI/UEFI memory region
     HobList = HobConstructor (
@@ -109,7 +109,7 @@ Main
   // BuildGuidDataHob (&gEfiFirmwarePerformanceGuid, &Performance, sizeof (Performance));
 
   // Set the Boot Mode
-  SetBootMode (ArmPlatformGetBootMode ());
+  SetBootMode(BOOT_WITH_FULL_CONFIGURATION);
 
   // Initialize Platform HOBs (CpuHob and FvHob)
   Status = PlatformPeim ();
