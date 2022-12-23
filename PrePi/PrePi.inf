@@ -70,9 +70,6 @@
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackBase
-  gEmbeddedTokenSpaceGuid.PcdPrePiStackSize
-  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolBase
   gLumia535PkgTokenSpaceGuid.PcdUefiMemPoolSize
   gLumia535PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
