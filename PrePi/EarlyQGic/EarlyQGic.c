@@ -64,6 +64,32 @@ QgicGetCpuMask(VOID)
 }
 
 /* Intialize distributor */
+VOID QGicDistInit(VOID)
+{
+  UINT32 i;
+  UINT32 num_irq = 0;
+  UINT32 cpumask;
+
+  cpumask = QgicGetCpuMask();
+  cpumask |= cpumask << 8;
+  cpumask |= cpumask << 16;
+
+  /* Find out how many interrupts are supported. */
+  num_irq = MmioRead32(GIC_DIST_CTR) & 0x1f;
+  num_irq = (num_irq + 1) * 32;
+
+  /* Set up interrupts for this CPU */
+  for (i = 32; i < num_irq; i += 4) {
+    MmioWrite32(GIC_DIST_TARGET + i * 4 / 4, cpumask);
+  }
+
+  QGicDistConfig(num_irq);
+
+  /*Enabling GIC */
+  MmioWrite32(GIC_DIST_CTRL, 1);
+}
+
+/* Intialize distributor */
 VOID QGicDistConfig(UINT32 NumIrq)
 {
   UINT32 i;
@@ -128,30 +154,6 @@ VOID QGicSetBinpoint(VOID)
   MmioWrite32(GIC_CPU_BINPOINT, 7);
 }
 
-VOID QGicDistInit(VOID)
-{
-  UINT32 i;
-  UINT32 num_irq = 0;
-  UINT32 cpumask;
-
-  cpumask = QgicGetCpuMask();
-  cpumask |= cpumask << 8;
-  cpumask |= cpumask << 16;
-
-  /* Find out how many interrupts are supported. */
-  num_irq = MmioRead32(GIC_DIST_CTR) & 0x1f;
-  num_irq = (num_irq + 1) * 32;
-
-  /* Set up interrupts for this CPU */
-  for (i = 32; i < num_irq; i += 4) {
-    MmioWrite32(GIC_DIST_TARGET + i * 4 / 4, cpumask);
-  }
-
-  QGicDistConfig(num_irq);
-
-  /*Enabling GIC */
-  MmioWrite32(GIC_DIST_CTRL, 1);
-}
 
 /* Intialize cpu specific controller */
 VOID QGicCpuInit(VOID)
@@ -164,7 +166,7 @@ EFI_STATUS
 EFIAPI
 QGicPeim(VOID)
 {
-  QGicHardwareReset();
+  // QGicHardwareReset();
   QGicSetBinpoint();
   QGicDistInit();
   QGicCpuInit();
