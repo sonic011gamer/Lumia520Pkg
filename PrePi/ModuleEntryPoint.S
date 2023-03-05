@@ -47,7 +47,8 @@ ASM_PFX(_ModuleEntryPoint):
   bic     r0, r0, #0x00000002     /* Clear bit 1 (Alignment faults) */
   orr     r0, r0, #0x00001000     /* set bit 12 (I) enable I-Cache */
   mcr     p15, 0, r0, c1, c0, 0
-
+  bx      lr
+  
   // Enable NEON register in case folks want to use them for optimizations (CopyMem)
   mrc     p15, 0, r0, c1, c0, 2
   orr     r0, r0, #0x00f00000   // Enable VPF access (V* instructions)
